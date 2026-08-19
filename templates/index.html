@@ -6,340 +6,283 @@
     <title>California Housing AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-    <div class="page-bg">
-        <div class="bg-gradient"></div>
-        <div class="bg-grid"></div>
-        <div class="bg-glow bg-glow-1"></div>
-        <div class="bg-glow bg-glow-2"></div>
-        <div class="bg-glow bg-glow-3"></div>
-        <div class="hero-shape shape-1"></div>
-        <div class="hero-shape shape-2"></div>
-        <div class="hero-shape shape-3"></div>
+    <div class="bg-full">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <div class="mesh-overlay"></div>
     </div>
 
-    <div class="container">
+    <div class="layout">
 
-        <header class="hero">
-            <div class="hero-eyebrow">
-                <span class="eyebrow-line"></span>
-                <span class="eyebrow-text">Plataforma de Machine Learning</span>
-                <span class="eyebrow-line"></span>
-            </div>
-
-            <h1>
-                <span class="title-line-1">California</span>
-                <span class="title-line-2">Housing <span class="gradient-word">AI</span></span>
-            </h1>
-
-            <p class="hero-sub">Prediccion inteligente del precio de viviendas mediante<br>Regresion Lineal Multiple con scikit-learn</p>
-
-            <div class="hero-chips">
-                <span class="chip">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                    Linear Regression
-                </span>
-                <span class="chip">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    20,640 registros
-                </span>
-                <span class="chip">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    8 variables predictoras
-                </span>
-            </div>
-        </header>
-
-        <main class="dashboard">
-
-            <section class="panel form-panel">
-                <div class="panel-header">
-                    <div class="panel-icon-wrap navy">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    </div>
-                    <div class="panel-title-block">
-                        <h2>Datos de la vivienda</h2>
-                        <p class="panel-desc">Ingresa las 8 variables para obtener una estimacion del precio de mercado</p>
-                    </div>
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
+                <div>
+                    <p class="brand-name">California</p>
+                    <p class="brand-sub">Housing AI</p>
+                </div>
+            </div>
 
-                <form id="predictForm" autocomplete="off">
-                    <div class="form-grid">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Prediccion</span>
+                </a>
+                <a href="#metrics" class="nav-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    <span>Metricas</span>
+                </a>
+                <a href="#info" class="nav-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>Detalles</span>
+                </a>
+            </nav>
 
-                        <div class="input-group">
-                            <label for="longitude">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                                </span>
-                                Longitud
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="longitude" step="any" value="-119.5" required>
-                                <span class="input-unit">°W</span>
-                            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-chip">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    scikit-learn
+                </div>
+                <div class="sidebar-chip">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Python
+                </div>
+                <div class="sidebar-chip">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    Flask
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="top-bar">
+                <div class="top-left">
+                    <div class="mobile-brand">
+                        <div class="brand-icon sm">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                         </div>
+                        <span>California Housing AI</span>
+                    </div>
+                    <h1 class="page-title">Prediccion de <span class="highlight">Viviendas</span></h1>
+                    <p class="page-subtitle">Regresion Lineal Multiple con el dataset California Housing Prices de Kaggle</p>
+                </div>
+                <div class="top-right">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Modelo activo</span>
+                </div>
+            </header>
 
-                        <div class="input-group">
-                            <label for="latitude">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                </span>
-                                Latitud
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="latitude" step="any" value="35.6" required>
-                                <span class="input-unit">°N</span>
-                            </div>
+            <div class="content-grid">
+
+                <section class="card form-card">
+                    <div class="card-head">
+                        <div class="card-icon navy">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         </div>
-
-                        <div class="input-group">
-                            <label for="housing_median_age">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                                </span>
-                                Edad media de vivienda
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="housing_median_age" step="any" value="28" required>
-                                <span class="input-unit">años</span>
-                            </div>
+                        <div>
+                            <h2>Datos de la vivienda</h2>
+                            <p class="card-sub">Completa los 8 campos para predecir el precio</p>
                         </div>
-
-                        <div class="input-group">
-                            <label for="total_rooms">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                </span>
-                                Habitaciones totales
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="total_rooms" step="any" value="1500" required>
-                                <span class="input-unit">uds</span>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="total_bedrooms">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-                                </span>
-                                Dormitorios totales
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="total_bedrooms" step="any" value="300" required>
-                                <span class="input-unit">uds</span>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="population">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                </span>
-                                Poblacion
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="population" step="any" value="1200" required>
-                                <span class="input-unit">hab</span>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="households">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                                </span>
-                                Total de hogares
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="households" step="any" value="400" required>
-                                <span class="input-unit">uds</span>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="median_income">
-                                <span class="label-icon">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                </span>
-                                Ingreso medio
-                            </label>
-                            <div class="input-box">
-                                <input type="number" id="median_income" step="any" value="4.5" required>
-                                <span class="input-unit">x10k</span>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <button type="submit" id="btnPredict">
-                        <span class="btn-shine"></span>
-                        <span class="btn-label">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                            Predecir precio
-                        </span>
-                    </button>
-                </form>
+                    <form id="predictForm" autocomplete="off">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="longitude">Longitud</label>
+                                <div class="input-box">
+                                    <input type="number" id="longitude" step="any" value="-119.5" required>
+                                    <span class="input-unit">°W</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="latitude">Latitud</label>
+                                <div class="input-box">
+                                    <input type="number" id="latitude" step="any" value="35.6" required>
+                                    <span class="input-unit">°N</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="housing_median_age">Edad media</label>
+                                <div class="input-box">
+                                    <input type="number" id="housing_median_age" step="any" value="28" required>
+                                    <span class="input-unit">años</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="total_rooms">Habitaciones</label>
+                                <div class="input-box">
+                                    <input type="number" id="total_rooms" step="any" value="1500" required>
+                                    <span class="input-unit">uds</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="total_bedrooms">Dormitorios</label>
+                                <div class="input-box">
+                                    <input type="number" id="total_bedrooms" step="any" value="300" required>
+                                    <span class="input-unit">uds</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="population">Poblacion</label>
+                                <div class="input-box">
+                                    <input type="number" id="population" step="any" value="1200" required>
+                                    <span class="input-unit">hab</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="households">Hogares</label>
+                                <div class="input-box">
+                                    <input type="number" id="households" step="any" value="400" required>
+                                    <span class="input-unit">uds</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="median_income">Ingreso medio</label>
+                                <div class="input-box">
+                                    <input type="number" id="median_income" step="any" value="4.5" required>
+                                    <span class="input-unit">x10k</span>
+                                </div>
+                            </div>
+                        </div>
 
-                <div id="result" class="result-box hidden">
-                    <div class="result-glow"></div>
-                    <div class="result-inner">
-                        <div class="result-top">
+                        <button type="submit" id="btnPredict">
+                            <span class="btn-shine"></span>
+                            <span class="btn-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                Predecir precio
+                            </span>
+                        </button>
+                    </form>
+
+                    <div id="result" class="result-box hidden">
+                        <div class="result-inner">
                             <div class="result-check">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <p class="result-label">Precio estimado</p>
+                            <p class="result-price" id="predictedPrice"></p>
+                        </div>
+                    </div>
+
+                    <div id="error" class="error-box hidden">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                        <span id="errorMsg"></span>
+                    </div>
+                </section>
+
+                <section class="card metrics-card" id="metrics">
+                    <div class="card-head">
+                        <div class="card-icon teal">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        </div>
+                        <div>
+                            <h2>Metricas del modelo</h2>
+                            <p class="card-sub">Evaluacion en conjunto de prueba</p>
+                        </div>
+                    </div>
+
+                    <div class="metrics-row">
+                        <div class="metric-box">
+                            <div class="metric-ring-wrap">
+                                <svg viewBox="0 0 36 36" class="metric-ring">
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-track"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-progress blue" stroke-dasharray="61.4, 100"/>
+                                </svg>
+                                <span class="ring-pct blue">61%</span>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-name">R2 Score</span>
+                                <span class="metric-val" id="metricR2">0.6139</span>
+                                <span class="metric-detail">Coef. determinacion</span>
+                            </div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-ring-wrap">
+                                <svg viewBox="0 0 36 36" class="metric-ring">
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-track"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-progress amber" stroke-dasharray="52, 100"/>
+                                </svg>
+                                <span class="ring-pct amber">$51k</span>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-name">MAE</span>
+                                <span class="metric-val" id="metricMAE">$51,810</span>
+                                <span class="metric-detail">Error absoluto medio</span>
+                            </div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-ring-wrap">
+                                <svg viewBox="0 0 36 36" class="metric-ring">
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-track"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.2" class="ring-progress rose" stroke-dasharray="71, 100"/>
+                                </svg>
+                                <span class="ring-pct rose">$71k</span>
+                            </div>
+                            <div class="metric-data">
+                                <span class="metric-name">RMSE</span>
+                                <span class="metric-val" id="metricRMSE">$71,133</span>
+                                <span class="metric-detail">Raiz error cuadratico</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card info-card" id="info">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon-wrap">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                             </div>
                             <div>
-                                <p class="result-title">Precio estimado de la vivienda</p>
-                                <p class="result-subtitle">Calculado con Regresion Lineal Multiple</p>
+                                <p class="info-label">Algoritmo</p>
+                                <p class="info-val">LinearRegression</p>
                             </div>
                         </div>
-                        <div class="result-price" id="predictedPrice"></div>
-                    </div>
-                </div>
-
-                <div id="error" class="error-box hidden">
-                    <div class="error-icon">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                    </div>
-                    <span id="errorMsg"></span>
-                </div>
-            </section>
-
-            <section class="panel metrics-panel">
-                <div class="panel-header">
-                    <div class="panel-icon-wrap gold">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                    </div>
-                    <div class="panel-title-block">
-                        <h2>Rendimiento del modelo</h2>
-                        <p class="panel-desc">Metricas de evaluacion en el conjunto de prueba (20% de los datos)</p>
-                    </div>
-                </div>
-
-                <div class="metrics-grid">
-
-                    <div class="stat-card indigo-card">
-                        <div class="stat-ring">
-                            <svg viewBox="0 0 36 36" class="ring-svg">
-                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                                <path class="ring-fill indigo-ring" stroke-dasharray="61.4, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                            </svg>
-                            <span class="ring-text indigo-text">61%</span>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-label-row">
-                                <span class="stat-label">R2 Score</span>
-                                <span class="stat-badge indigo-badge">0.6139</span>
+                        <div class="info-item">
+                            <div class="info-icon-wrap">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                             </div>
-                            <div class="stat-desc">Coeficiente de determinacion — que tan bien el modelo ajusta los datos</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card gold-card">
-                        <div class="stat-ring">
-                            <svg viewBox="0 0 36 36" class="ring-svg">
-                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                                <path class="ring-fill gold-ring" stroke-dasharray="52, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                            </svg>
-                            <span class="ring-text gold-text">$51k</span>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-label-row">
-                                <span class="stat-label">MAE</span>
-                                <span class="stat-badge gold-badge">$51,810</span>
+                            <div>
+                                <p class="info-label">Dataset</p>
+                                <p class="info-val">20,640 registros</p>
                             </div>
-                            <div class="stat-desc">Error absoluto medio — desviacion promedio entre prediccion y valor real</div>
                         </div>
-                    </div>
-
-                    <div class="stat-card terra-card">
-                        <div class="stat-ring">
-                            <svg viewBox="0 0 36 36" class="ring-svg">
-                                <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                                <path class="ring-fill terra-ring" stroke-dasharray="71, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="2.5"/>
-                            </svg>
-                            <span class="ring-text terra-text">$71k</span>
-                        </div>
-                        <div class="stat-info">
-                            <div class="stat-label-row">
-                                <span class="stat-label">RMSE</span>
-                                <span class="stat-badge terra-badge">$71,133</span>
+                        <div class="info-item">
+                            <div class="info-icon-wrap">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                             </div>
-                            <div class="stat-desc">Raiz del error cuadratico — penaliza errores grandes con mayor severidad</div>
+                            <div>
+                                <p class="info-label">Entrenamiento</p>
+                                <p class="info-val">16,512 muestras</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon-wrap">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            </div>
+                            <div>
+                                <p class="info-label">Variable objetivo</p>
+                                <p class="info-val"><code>median_house_value</code></p>
+                            </div>
                         </div>
                     </div>
+                    <div class="info-footer">
+                        <p>El sistema utiliza multiples caracteristicas de una vivienda (ubicacion, tamano, antiguedad, ingresos) para estimar su valor de mercado mediante regresion lineal multiple.</p>
+                    </div>
+                </section>
 
-                </div>
-            </section>
-
-            <section class="panel detail-panel">
-                <div class="detail-grid">
-                    <div class="detail-item">
-                        <div class="detail-icon-wrap">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        </div>
-                        <div>
-                            <p class="detail-title">Algoritmo</p>
-                            <p class="detail-value">LinearRegression de scikit-learn</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon-wrap">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                        </div>
-                        <div>
-                            <p class="detail-title">Entrenamiento</p>
-                            <p class="detail-value">16,512 muestras (80%)</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon-wrap">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                        </div>
-                        <div>
-                            <p class="detail-title">Validacion</p>
-                            <p class="detail-value">4,128 muestras (20%)</p>
-                        </div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-icon-wrap">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                        </div>
-                        <div>
-                            <p class="detail-title">Dataset</p>
-                            <p class="detail-value">California Housing Prices (Kaggle)</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="panel info-panel">
-                <div class="info-content">
-                    <div class="info-icon-wrap">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                    </div>
-                    <div>
-                        <p class="info-main">El sistema utiliza multiples caracteristicas de una vivienda (ubicacion, tamano, antiguedad, ingresos) para estimar su valor de mercado mediante un modelo de regresion lineal multiple entrenado con datos reales de California.</p>
-                        <p class="info-sub">Variable objetivo: <code>median_house_value</code> &middot; 8 features numericas &middot; Sin variables categoricas</p>
-                    </div>
-                </div>
-            </section>
+            </div>
 
         </main>
-
-        <footer class="footer">
-            <div class="footer-divider">
-                <span class="f-line"></span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span class="f-line"></span>
-            </div>
-            <p class="footer-text">California Housing AI &middot; Machine Learning &middot; Regresion Lineal Multiple</p>
-            <p class="footer-sub">Proyecto de clase &middot; Dataset de Kaggle &middot; Python + Flask + scikit-learn</p>
-        </footer>
 
     </div>
 
@@ -358,16 +301,9 @@
             btnPredict.disabled = true;
             btnPredict.querySelector(".btn-label").lastChild.textContent = "Calculando...";
 
-            const features = [
-                "longitude", "latitude", "housing_median_age",
-                "total_rooms", "total_bedrooms", "population",
-                "households", "median_income"
-            ];
-
+            const features = ["longitude","latitude","housing_median_age","total_rooms","total_bedrooms","population","households","median_income"];
             const data = {};
-            for (const f of features) {
-                data[f] = parseFloat(document.getElementById(f).value);
-            }
+            for (const f of features) data[f] = parseFloat(document.getElementById(f).value);
 
             try {
                 const response = await fetch("/predict", {
@@ -375,16 +311,9 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),
                 });
-
                 const result = await response.json();
-
                 if (response.ok) {
-                    const price = result.prediction.toLocaleString("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                        maximumFractionDigits: 0,
-                    });
-                    predictedPrice.textContent = price;
+                    predictedPrice.textContent = result.prediction.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
                     resultDiv.classList.remove("hidden");
                 } else {
                     errorMsg.textContent = result.error || "Error al predecir.";
