@@ -73,44 +73,50 @@
                     <div class="field">
                         <label for="longitude">Longitud</label>
                         <div class="input-wrap">
-                            <input type="number" id="longitude" step="any" value="-119.5" required>
+                            <input type="number" id="longitude" step="any" value="-119.5" min="-124.35" max="-114.31" required>
                             <span class="input-tag">°W</span>
                         </div>
+                        <span class="field-range">Rango: -124.35 a -114.31</span>
                     </div>
                     <div class="field">
                         <label for="latitude">Latitud</label>
                         <div class="input-wrap">
-                            <input type="number" id="latitude" step="any" value="35.6" required>
+                            <input type="number" id="latitude" step="any" value="35.6" min="32.54" max="41.95" required>
                             <span class="input-tag">°N</span>
                         </div>
+                        <span class="field-range">Rango: 32.54 a 41.95</span>
                     </div>
                     <div class="field">
                         <label for="housing_median_age">Edad Media</label>
                         <div class="input-wrap">
-                            <input type="number" id="housing_median_age" step="any" value="28" required>
+                            <input type="number" id="housing_median_age" step="any" value="28" min="1" max="52" required>
                             <span class="input-tag">años</span>
                         </div>
+                        <span class="field-range">Rango: 1 a 52</span>
                     </div>
                     <div class="field">
                         <label for="total_rooms">Habitaciones</label>
                         <div class="input-wrap">
-                            <input type="number" id="total_rooms" step="any" value="1500" required>
+                            <input type="number" id="total_rooms" step="1" value="1500" min="2" max="39320" required>
                             <span class="input-tag">uds</span>
                         </div>
+                        <span class="field-range">Rango: 2 a 39,320</span>
                     </div>
                     <div class="field">
                         <label for="total_bedrooms">Dormitorios</label>
                         <div class="input-wrap">
-                            <input type="number" id="total_bedrooms" step="any" value="300" required>
+                            <input type="number" id="total_bedrooms" step="1" value="300" min="1" max="6445" required>
                             <span class="input-tag">uds</span>
                         </div>
+                        <span class="field-range">Rango: 1 a 6,445</span>
                     </div>
                     <div class="field">
                         <label for="median_income">Ingreso Medio</label>
                         <div class="input-wrap">
-                            <input type="number" id="median_income" step="any" value="4.5" required>
+                            <input type="number" id="median_income" step="any" value="4.5" min="0.5" max="15.0" required>
                             <span class="input-tag">x10k</span>
                         </div>
+                        <span class="field-range">Rango: 0.5 a 15.0</span>
                     </div>
                 </div>
 
@@ -229,19 +235,19 @@
                         <tr>
                             <th>Variable</th>
                             <th>Tipo</th>
-                            <th>Ejemplo</th>
+                            <th>Rango</th>
                             <th>Descripcion</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>longitude</td><td>Numerica</td><td>-119.5</td><td>Ubicacion geografica longitudinal</td></tr>
-                        <tr><td>latitude</td><td>Numerica</td><td>35.6</td><td>Ubicacion geografica latitudinal</td></tr>
-                        <tr><td>housing_median_age</td><td>Numerica</td><td>28</td><td>Edad media de las viviendas en la zona</td></tr>
-                        <tr><td>total_rooms</td><td>Numerica</td><td>1,500</td><td>Total de habitaciones en el bloque</td></tr>
-                        <tr><td>total_bedrooms</td><td>Numerica</td><td>300</td><td>Total de dormitorios en el bloque</td></tr>
-                        <tr><td>population</td><td>Numerica</td><td>1,200</td><td>Poblacion del bloque</td></tr>
-                        <tr><td>households</td><td>Numerica</td><td>400</td><td>Numero de hogares en el bloque</td></tr>
-                        <tr><td>median_income</td><td>Numerica</td><td>4.5</td><td>Ingreso medio del bloque (x10k USD)</td></tr>
+                        <tr><td>longitude</td><td>Numerica</td><td>-124.35 a -114.31</td><td>Ubicacion geografica longitudinal</td></tr>
+                        <tr><td>latitude</td><td>Numerica</td><td>32.54 a 41.95</td><td>Ubicacion geografica latitudinal</td></tr>
+                        <tr><td>housing_median_age</td><td>Numerica</td><td>1 a 52</td><td>Edad media de las viviendas en la zona</td></tr>
+                        <tr><td>total_rooms</td><td>Numerica</td><td>2 a 39,320</td><td>Total de habitaciones en el bloque</td></tr>
+                        <tr><td>total_bedrooms</td><td>Numerica</td><td>1 a 6,445</td><td>Total de dormitorios en el bloque</td></tr>
+                        <tr><td>population</td><td>Numerica</td><td>3 a 35,682</td><td>Poblacion del bloque</td></tr>
+                        <tr><td>households</td><td>Numerica</td><td>1 a 6,082</td><td>Numero de hogares en el bloque</td></tr>
+                        <tr><td>median_income</td><td>Numerica</td><td>0.5 a 15.0</td><td>Ingreso medio del bloque (x10k USD)</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -264,6 +270,17 @@
     </footer>
 
     <script>
+        const RANGES = {
+            longitude: {min:-124.35, max:-114.31, label:"Longitud"},
+            latitude: {min:32.54, max:41.95, label:"Latitud"},
+            housing_median_age: {min:1, max:52, label:"Edad Media"},
+            total_rooms: {min:2, max:39320, label:"Habitaciones"},
+            total_bedrooms: {min:1, max:6445, label:"Dormitorios"},
+            median_income: {min:0.5, max:15.0, label:"Ingreso Medio"},
+            population: {min:3, max:35682, label:"Poblacion"},
+            households: {min:1, max:6082, label:"Hogares"}
+        };
+
         const form = document.getElementById("predictForm");
         const resultDiv = document.getElementById("result");
         const errorDiv = document.getElementById("error");
@@ -275,12 +292,23 @@
             e.preventDefault();
             resultDiv.classList.add("hidden");
             errorDiv.classList.add("hidden");
-            btnPredict.disabled = true;
-            btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
 
             const features = ["longitude","latitude","housing_median_age","total_rooms","total_bedrooms","population","households","median_income"];
             const data = {};
-            for (const f of features) data[f] = parseFloat(document.getElementById(f).value);
+            for (const f of features) {
+                const el = document.getElementById(f);
+                const val = parseFloat(el.value);
+                const r = RANGES[f];
+                if (isNaN(val) || val < r.min || val > r.max) {
+                    errorMsg.textContent = r.label + ": valor fuera de rango (" + r.min + " a " + r.max + ")";
+                    errorDiv.classList.remove("hidden");
+                    return;
+                }
+                data[f] = val;
+            }
+
+            btnPredict.disabled = true;
+            btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
 
             try {
                 const response = await fetch("/predict", {
