@@ -15,9 +15,9 @@
         <div class="pn-inner">
             <span class="pn-label">Proyectos:</span>
             <div class="pn-links">
-                <a href="#" class="pn-link active">California Housing</a>
-                <a href="#" class="pn-link disabled">Wine Quality</a>
-                <a href="#" class="pn-link disabled">Diabetes</a>
+                <a href="/" class="pn-link active">California Housing</a>
+                <a href="/wine-quality" class="pn-link">Wine Quality</a>
+                <a href="/diabetes" class="pn-link">Diabetes</a>
             </div>
         </div>
     </nav>
@@ -431,7 +431,7 @@
             btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
 
             try {
-                const response = await fetch("/predict", {
+                const response = await fetch("/api/predict/california-housing", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),
