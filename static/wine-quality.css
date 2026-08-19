@@ -1,2 +1,96 @@
 /* Wine Quality - estilos especificos */
-/* Agrega aqui overrides o estilos exclusivos de este proyecto */
+
+/* ── HERO ── */
+.wine-hero .hero-bg {
+    background: linear-gradient(135deg, #722F37 0%, #4A1A20 50%, #2D0E14 100%) !important;
+}
+.wine-hero .predictor-card {
+    border-top: 3px solid #722F37;
+}
+.wine-pc-icon {
+    background: #722F37 !important;
+    color: #fff !important;
+}
+
+/* ── FORM ── */
+.form-note {
+    font-size: 0.82rem;
+    color: #718096;
+    background: #FDF6F7;
+    border-left: 3px solid #722F37;
+    padding: 10px 14px;
+    margin: 0 0 18px;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.4;
+}
+.form-section-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #722F37;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 18px 0 10px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #E8D0D4;
+}
+.form-grid-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+@media (max-width: 768px) {
+    .form-grid-3 { grid-template-columns: 1fr !important; }
+}
+
+/* ── RESULT ── */
+.wine-result .result-price {
+    color: #722F37;
+}
+.result-stars {
+    font-size: 1.8rem;
+    color: #C49A2A;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+/* ── METRICS ── */
+.wine-accent { background: #722F37; color: #fff; }
+.wine-green { background: #2E9E5B; color: #fff; }
+.metric-bar-fill.wine-accent { background: #722F37; }
+.metric-bar-fill.wine-green { background: #2E9E5B; }
+
+/* ── NAV ACTIVE ── */
+.project-nav .pn-link.active {
+    background: #722F37;
+}
+.nav-status .status-dot {
+    background: #2E9E5B;
+}
+
+/* ── CHARTS ── */
+.charts-section { padding: 60px 0 20px; }
+.charts-section h3 { font-size: 1.5rem; font-weight: 800; color: #722F37; margin: 0 0 4px; }
+.charts-desc { color: #718096; margin: 0 0 28px; font-size: 0.95rem; }
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.chart-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px; transition: box-shadow 0.2s; }
+.chart-card:hover { box-shadow: 0 4px 20px rgba(114,47,55,0.08); }
+.chart-card-wide { grid-column: 1 / -1; }
+.chart-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.chart-card-header h4 { font-size: 1rem; font-weight: 700; color: #722F37; margin: 0; }
+.chart-tag { font-size: 0.75rem; font-weight: 600; color: #718096; background: #FDF6F7; padding: 4px 10px; border-radius: 6px; }
+.chart-container { position: relative; height: 300px; }
+.chart-card-wide .chart-container { height: 340px; }
+
+/* ── HEATMAP ── */
+.heatmap-container { overflow-x: auto; }
+.heatmap-grid { display: grid; gap: 2px; min-width: 560px; }
+.heatmap-corner { background: transparent; }
+.heatmap-header { font-size: 0.65rem; font-weight: 700; color: #4A5568; text-align: center; padding: 6px 2px; }
+.heatmap-cell { text-align: center; font-size: 0.62rem; font-weight: 600; font-family: 'IBM Plex Mono', monospace; padding: 8px 2px; border-radius: 3px; cursor: default; transition: transform 0.15s; }
+.heatmap-cell:hover { transform: scale(1.08); z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.heatmap-legend { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+.heatmap-legend-label { font-size: 0.72rem; font-weight: 600; color: #718096; font-family: 'IBM Plex Mono', monospace; }
+.heatmap-legend-bar { width: 200px; height: 12px; border-radius: 6px; }
+
+@media (max-width: 768px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-container { height: 250px; }
+}

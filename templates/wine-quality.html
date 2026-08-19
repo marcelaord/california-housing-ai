@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wine Quality - Institute</title>
+    <title>Wine Quality Institute</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/wine-quality.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -28,66 +29,676 @@
             <div class="nav-left">
                 <div class="nav-logo">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+                        <path d="M8 22h8"/><path d="M12 11v11"/><path d="M17 2H7l1 9c0 2.76 2.24 5 5 5s5-2.24 5-5l1-9z"/>
                     </svg>
                 </div>
                 <div class="nav-brand-group">
                     <span class="nav-brand">Wine Quality Institute</span>
-                    <span class="nav-tagline">Data Science Division</span>
+                    <span class="nav-tagline">Enological Analytics Division</span>
                 </div>
             </div>
             <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#consultor" class="nav-link active">Consultor</a>
+                    <a href="#graficos" class="nav-link">Graficos</a>
+                    <a href="#arquitectura" class="nav-link">Arquitectura</a>
+                    <a href="#metodologia" class="nav-link">Metodologia</a>
+                    <a href="#datos" class="nav-link">Datos</a>
+                </div>
                 <div class="nav-status">
-                    <span class="status-dot pending"></span>
-                    Proximamente
+                    <span class="status-dot"></span>
+                    Modelo Activo
+                    <span class="nav-version">v1.0</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero wine-hero" id="consultor">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                En desarrollo
+                Regresion Lineal + Polinomial con Ridge
             </div>
-            <h1>Prediccion de Calidad<br>de Vinos</h1>
-            <p class="hero-sub">Modelo de machine learning para predecir la calidad de vinos portugueses basado en propiedades fisicoquimicas como acidez, azucar, cloruros y alcohol.</p>
+            <h1>Estimador de Calidad<br>de Vino Tinto</h1>
+            <p class="hero-sub">Sistema basado en machine learning para la estimacion de la calidad de vinos tintos, entrenado con 1,143 registros del dataset WineQT (UCI). 11 variables fisicoquimicas.</p>
         </div>
 
         <div class="predictor-card">
             <div class="pc-header">
                 <div class="pc-title-row">
-                    <div class="pc-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22h8"/><path d="M12 11v11"/><path d="M17 2H7l5 9z"/></svg>
+                    <div class="pc-icon wine-pc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 22h8"/><path d="M12 11v11"/><path d="M17 2H7l1 9c0 2.76 2.24 5 5 5s5-2.24 5-5l1-9z"/></svg>
                     </div>
                     <div>
-                        <h2>Consultor de Vinos</h2>
-                        <p>Este dataset estara disponible proximamente</p>
+                        <h2>Consultor de Calidad</h2>
+                        <p>Complete las propiedades fisicoquimicas para obtener la nota estimada (3-8)</p>
                     </div>
                 </div>
             </div>
-            <div style="padding:40px 32px;text-align:center">
-                <p style="color:var(--text-4);font-size:0.88rem">Modulo en desarrollo por el equipo.</p>
+
+            <form id="predictForm" autocomplete="off">
+                <p class="form-note">Las propiedades corresponden a un vino tino portugues de la region de Diao. Escala de calidad: 3 (mala) a 8 (excelente).</p>
+
+                <div class="form-section-label">Acidez y sabor</div>
+                <div class="form-grid form-grid-3">
+                    <div class="field">
+                        <label for="fixed_acidity">Acidez fija</label>
+                        <div class="input-wrap">
+                            <input type="number" id="fixed_acidity" step="any" value="8.3" min="4.6" max="15.9" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 4.6 a 15.9</span>
+                    </div>
+                    <div class="field">
+                        <label for="volatile_acidity">Acidez volatil</label>
+                        <div class="input-wrap">
+                            <input type="number" id="volatile_acidity" step="any" value="0.53" min="0.12" max="1.58" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.12 a 1.58</span>
+                    </div>
+                    <div class="field">
+                        <label for="citric_acid">Acido citrico</label>
+                        <div class="input-wrap">
+                            <input type="number" id="citric_acid" step="any" value="0.27" min="0.0" max="1.0" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.0 a 1.0</span>
+                    </div>
+                </div>
+
+                <div class="form-section-label">Azucar, sales y sulfurosos</div>
+                <div class="form-grid form-grid-3">
+                    <div class="field">
+                        <label for="residual_sugar">Azucar residual</label>
+                        <div class="input-wrap">
+                            <input type="number" id="residual_sugar" step="any" value="2.5" min="0.9" max="15.5" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.9 a 15.5</span>
+                    </div>
+                    <div class="field">
+                        <label for="chlorides">Cloruros</label>
+                        <div class="input-wrap">
+                            <input type="number" id="chlorides" step="any" value="0.087" min="0.012" max="0.611" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.012 a 0.611</span>
+                    </div>
+                    <div class="field">
+                        <label for="free_sulfur_dioxide">SO₂ libre</label>
+                        <div class="input-wrap">
+                            <input type="number" id="free_sulfur_dioxide" step="1" value="16" min="1" max="68" required>
+                            <span class="input-tag">mg/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 1 a 68</span>
+                    </div>
+                    <div class="field">
+                        <label for="total_sulfur_dioxide">SO₂ total</label>
+                        <div class="input-wrap">
+                            <input type="number" id="total_sulfur_dioxide" step="1" value="46" min="6" max="289" required>
+                            <span class="input-tag">mg/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 6 a 289</span>
+                    </div>
+                </div>
+
+                <div class="form-section-label">Fisicoquimica</div>
+                <div class="form-grid form-grid-3">
+                    <div class="field">
+                        <label for="density">Densidad</label>
+                        <div class="input-wrap">
+                            <input type="number" id="density" step="0.0001" value="0.997" min="0.9901" max="1.0037" required>
+                            <span class="input-tag">g/cm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.9901 a 1.0037</span>
+                    </div>
+                    <div class="field">
+                        <label for="pH">pH</label>
+                        <div class="input-wrap">
+                            <input type="number" id="pH" step="any" value="3.31" min="2.74" max="4.01" required>
+                            <span class="input-tag"></span>
+                        </div>
+                        <span class="field-range">Rango: 2.74 a 4.01</span>
+                    </div>
+                    <div class="field">
+                        <label for="sulphates">Sulfatos</label>
+                        <div class="input-wrap">
+                            <input type="number" id="sulphates" step="any" value="0.66" min="0.33" max="2.0" required>
+                            <span class="input-tag">g/dm³</span>
+                        </div>
+                        <span class="field-range">Rango: 0.33 a 2.0</span>
+                    </div>
+                    <div class="field">
+                        <label for="alcohol">Alcohol</label>
+                        <div class="input-wrap">
+                            <input type="number" id="alcohol" step="any" value="10.4" min="8.4" max="14.9" required>
+                            <span class="input-tag">% vol</span>
+                        </div>
+                        <span class="field-range">Rango: 8.4 a 14.9</span>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnPredict">
+                    <span class="btn-shine"></span>
+                    <span class="btn-inner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        Estimar calidad
+                    </span>
+                </button>
+            </form>
+
+            <div id="result" class="result hidden">
+                <div class="result-inner wine-result">
+                    <div class="result-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <p class="result-label">Calidad estimada del vino</p>
+                    <p class="result-price" id="predictedQuality"></p>
+                    <p class="result-stars" id="predictedStars"></p>
+                    <p class="result-sub">Calculado con Regresion Polinomial (Grado 2) + Ridge</p>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span id="errorMsg"></span>
             </div>
         </div>
     </section>
+
+    <main class="main-content">
+        <div class="metrics-band">
+            <div class="metric-block">
+                <div class="metric-icon wine-accent">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">R2</p>
+                    <p class="metric-label">Lineal: 0.3171 | Polinomial: 0.3360</p>
+                    <div class="metric-bar"><div class="metric-bar-fill wine-accent" style="width:33.6%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon wine-green">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">MAE</p>
+                    <p class="metric-label">Lineal: 0.4773 | Polinomial: 0.4700</p>
+                    <div class="metric-bar"><div class="metric-bar-fill wine-green" style="width:47%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon slate">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">RMSE</p>
+                    <p class="metric-label">Lineal: 0.6165 | Polinomial: 0.6079</p>
+                    <div class="metric-bar"><div class="metric-bar-fill slate" style="width:61%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-band">
+            <div class="info-item">
+                <span class="info-val">Lineal + Polinomial + Ridge</span>
+                <span class="info-label">Modelos entrenados</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">1,143</span>
+                <span class="info-label">Registros de entrenamiento</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">11</span>
+                <span class="info-label">Variables fisicoquimicas</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val mono">Polinomial G2 gana 3-0</span>
+                <span class="info-label">Comparativa de metricas</span>
+            </div>
+        </div>
+
+        <section class="charts-section" id="graficos">
+            <h3>Analisis Visual</h3>
+            <p class="charts-desc">Visualizacion de metricas, correlaciones y comportamiento del modelo.</p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Comparativa de Modelos</h4>
+                        <span class="chart-tag">Lineal vs Polinomial G2</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartComparison"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Importancia de Variables</h4>
+                        <span class="chart-tag">Coeficientes Lineales</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartImportance"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-card-wide">
+                    <div class="chart-card-header">
+                        <h4>Matriz de Correlacion</h4>
+                        <span class="chart-tag">11 Variables Fisicoquimicas</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer"></div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Valores Reales vs Predichos</h4>
+                        <span class="chart-tag">Polinomial Grado 2</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartScatter"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Distribucion de Calidad</h4>
+                        <span class="chart-tag">Target Variable</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="arch-section" id="arquitectura">
+            <h3>Arquitectura del Sistema</h3>
+            <p class="arch-desc">Estructura del proyecto y funcion de cada componente.</p>
+
+            <div class="arch-flow">
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon frontend">FE</div>
+                    <span>Frontend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon backend">BE</div>
+                    <span>Backend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon model">ML</div>
+                    <span>Modelo</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon data">DB</div>
+                    <span>Datos</span>
+                </div>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge frontend">Frontend</div>
+                        <span class="arch-tech">HTML + CSS + JavaScript</span>
+                    </div>
+                    <p class="arch-card-desc">Interfaz visual con formulario de 11 campos fisicoquimicos, validacion de rangos, resultados dinamicos y graficos interactivos.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">H</span> templates/wine-quality.html <span class="arch-file-role">Estructura y formulario</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">C</span> static/wine-quality.css <span class="arch-file-role">Estilos especificos</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge backend">Backend</div>
+                        <span class="arch-tech">Python + Flask</span>
+                    </div>
+                    <p class="arch-card-desc">Servidor que recibe las 11 propiedades, aplica el Pipeline (Poly + Scaler + Ridge) y devuelve la nota de calidad estimada.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> app.py <span class="arch-file-role">Rutas /wine-quality y /api/predict/wine-quality</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge model">Modelo ML</div>
+                        <span class="arch-tech">scikit-learn + RidgeCV</span>
+                    </div>
+                    <p class="arch-card-desc">Regresion Polinomial grado 2 con regularizacion Ridge (lambda por CV). 78 terminos, Pipeline completo serializado en .pkl.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> train.py <span class="arch-file-role">Fase A + B completa</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">B</span> model_poly.pkl <span class="arch-file-role">Pipeline serializado</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge data">Base de Datos</div>
+                        <span class="arch-tech">CSV (Wine Quality - UCI)</span>
+                    </div>
+                    <p class="arch-card-desc">Dataset WineQT.csv con 1,143 registros de vinos tintos portugueses. 11 variables fisicoquimicas y nota de calidad (3-8).</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">D</span> WineQT.csv <span class="arch-file-role">1,143 registros, 12 columnas</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="method-section" id="metodologia">
+            <h3>Metodologia</h3>
+            <div class="method-grid">
+                <div class="method-card">
+                    <div class="method-num">1</div>
+                    <h4>Recoleccion de datos</h4>
+                    <p>Dataset WineQT.csv de UCI Machine Learning Repository, con 1,143 registros de vinos tintos de la region Diao, Portugal. 11 variables fisicoquimicas y nota de calidad.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">2</div>
+                    <h4>Preprocesamiento</h4>
+                    <p>Sin valores nulos ni duplicados. Se conservaron 415 outliers (vinos reales). Estandarizacion z-score con StandardScaler para manejar diferencias de escala.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">3</div>
+                    <h4>Entrenamiento</h4>
+                    <p>Regresion Lineal Multiple + Polinomial grado 2 con regularizacion Ridge (lambda por CV). Comparativa con grados 3 y 4 que sobreajustan.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset-section" id="datos">
+            <h3>Dataset</h3>
+            <div class="dataset-table-wrap">
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Tipo</th>
+                            <th>Rango</th>
+                            <th>Descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>fixed acidity</td><td>Numerica</td><td>4.6 a 15.9</td><td>Acidez fija (tartarico, malico) en g/dm³</td></tr>
+                        <tr><td>volatile acidity</td><td>Numerica</td><td>0.12 a 1.58</td><td>Acidez volatil (acetico) en g/dm³</td></tr>
+                        <tr><td>citric acid</td><td>Numerica</td><td>0.0 a 1.0</td><td>Acido citrico fresco en g/dm³</td></tr>
+                        <tr><td>residual sugar</td><td>Numerica</td><td>0.9 a 15.5</td><td>Azucar residual post-fermentacion en g/dm³</td></tr>
+                        <tr><td>chlorides</td><td>Numerica</td><td>0.012 a 0.611</td><td>Cloruros (sal) en g/dm³</td></tr>
+                        <tr><td>free sulfur dioxide</td><td>Numerica</td><td>1 a 68</td><td>SO₂ libre en mg/dm³</td></tr>
+                        <tr><td>total sulfur dioxide</td><td>Numerica</td><td>6 a 289</td><td>SO₂ total en mg/dm³</td></tr>
+                        <tr><td>density</td><td>Numerica</td><td>0.9901 a 1.0037</td><td>Densidad del vino en g/cm³</td></tr>
+                        <tr><td>pH</td><td>Numerica</td><td>2.74 a 4.01</td><td>Nivel de acidez/alcalinidad</td></tr>
+                        <tr><td>sulphates</td><td>Numerica</td><td>0.33 a 2.0</td><td>Sulfatos (aditivo antimicrobiano) en g/dm³</td></tr>
+                        <tr><td>alcohol</td><td>Numerica</td><td>8.4 a 14.9</td><td>Graduacion alcoholica en % vol</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="dataset-note">Fuente: UCI Machine Learning Repository - Wine Quality Dataset (Diao, Portugal)</p>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-left">
                 <div class="footer-logo">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+                        <path d="M8 22h8"/><path d="M12 11v11"/><path d="M17 2H7l1 9c0 2.76 2.24 5 5 5s5-2.24 5-5l1-9z"/>
                     </svg>
                 </div>
-                <span>California Housing Institute</span>
+                <span>Wine Quality Institute</span>
             </div>
-            <p class="footer-copy">2026 Real Estate Analytics Division. Todos los derechos reservados.</p>
+            <p class="footer-copy">2026 Enological Analytics Division. Todos los derechos reservados.</p>
         </div>
     </footer>
 
+    <script>
+        const FEATURES = ["fixed_acidity","volatile_acidity","citric_acid","residual_sugar","chlorides","free_sulfur_dioxide","total_sulfur_dioxide","density","pH","sulphates","alcohol"];
+        const API_FEATURES = ["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol"];
+        const RANGES = {
+            fixed_acidity: {min:4.6, max:15.9, label:"Acidez fija"},
+            volatile_acidity: {min:0.12, max:1.58, label:"Acidez volatil"},
+            citric_acid: {min:0.0, max:1.0, label:"Acido citrico"},
+            residual_sugar: {min:0.9, max:15.5, label:"Azucar residual"},
+            chlorides: {min:0.012, max:0.611, label:"Cloruros"},
+            free_sulfur_dioxide: {min:1, max:68, label:"SO2 libre"},
+            total_sulfur_dioxide: {min:6, max:289, label:"SO2 total"},
+            density: {min:0.9901, max:1.0037, label:"Densidad"},
+            pH: {min:2.74, max:4.01, label:"pH"},
+            sulphates: {min:0.33, max:2.0, label:"Sulfatos"},
+            alcohol: {min:8.4, max:14.9, label:"Alcohol"}
+        };
+
+        function starsForQuality(q) {
+            var n = Math.round(q);
+            return "★".repeat(Math.max(0, n - 3)) + "☆".repeat(Math.max(0, 5 - (n - 3)));
+        }
+
+        const form = document.getElementById("predictForm");
+        const resultDiv = document.getElementById("result");
+        const errorDiv = document.getElementById("error");
+        const predictedQuality = document.getElementById("predictedQuality");
+        const predictedStars = document.getElementById("predictedStars");
+        const errorMsg = document.getElementById("errorMsg");
+        const btnPredict = document.getElementById("btnPredict");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            resultDiv.classList.add("hidden");
+            errorDiv.classList.add("hidden");
+
+            var data = {};
+            for (var i = 0; i < FEATURES.length; i++) {
+                var el = document.getElementById(FEATURES[i]);
+                var val = parseFloat(el.value);
+                var r = RANGES[FEATURES[i]];
+                if (isNaN(val) || val < r.min || val > r.max) {
+                    errorMsg.textContent = r.label + ": valor fuera de rango (" + r.min + " a " + r.max + ")";
+                    errorDiv.classList.remove("hidden");
+                    return;
+                }
+                data[API_FEATURES[i]] = val;
+            }
+
+            btnPredict.disabled = true;
+            btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
+
+            try {
+                var response = await fetch("/api/predict/wine-quality", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+                var result = await response.json();
+                if (response.ok) {
+                    predictedQuality.textContent = result.prediction.toFixed(2) + " / 10";
+                    predictedStars.textContent = starsForQuality(result.prediction);
+                    resultDiv.classList.remove("hidden");
+                } else {
+                    errorMsg.textContent = result.error || "Error al predecir.";
+                    errorDiv.classList.remove("hidden");
+                }
+            } catch (err) {
+                errorMsg.textContent = "Error de conexion con el servidor.";
+                errorDiv.classList.remove("hidden");
+            } finally {
+                btnPredict.disabled = false;
+                btnPredict.querySelector(".btn-inner").lastChild.textContent = "Estimar calidad";
+            }
+        });
+
+        var navLinks = document.querySelectorAll('.nav-link');
+        var sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', function() {
+            var current = '';
+            sections.forEach(function(s) {
+                if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+            });
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+
+    <script>
+        var WC = {
+            wine: '#722F37', wineLight: '#8B3A42',
+            green: '#2E9E5B', greenLight: '#45B97C',
+            gold: '#C49A2A', slate: '#4A5568',
+            navy: '#1B365D', blue: '#3B82F6',
+            red: '#EF4444', bg: '#F4F6F8'
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#4A5568';
+
+        // ── CHART 1: COMPARATIVA ──
+        new Chart(document.getElementById('chartComparison'), {
+            type: 'bar',
+            data: {
+                labels: ['R2 Score', 'MAE', 'RMSE'],
+                datasets: [
+                    { label: 'Lineal Multiple', data: [0.3171, 0.4773, 0.6165], backgroundColor: WC.wine, borderWidth: 0, borderRadius: 4, barPercentage: 0.7, categoryPercentage: 0.6 },
+                    { label: 'Polinomial G2 + Ridge', data: [0.3360, 0.4700, 0.6079], backgroundColor: WC.gold, borderWidth: 0, borderRadius: 4, barPercentage: 0.7, categoryPercentage: 0.6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { weight: '600' } } },
+                    tooltip: { backgroundColor: '#722F37', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw.toFixed(4); } } }
+                },
+                scales: { y: { beginAtZero: true, grid: { color: '#E8ECF0' } }, x: { grid: { display: false }, ticks: { font: { weight: '600' } } } }
+            }
+        });
+
+        // ── CHART 2: IMPORTANCIA ──
+        new Chart(document.getElementById('chartImportance'), {
+            type: 'bar',
+            data: {
+                labels: ['Alcohol', 'Acidez volatil', 'Sulfatos', 'Acidez fija', 'Cloruros', 'SO2 total', 'Ac. citrico', 'Densidad', 'pH', 'SO2 libre', 'Azucar res.'],
+                datasets: [{
+                    label: 'Coeficiente',
+                    data: [0.2864, -0.2391, 0.1616, 0.0870, -0.0856, -0.0729, -0.0661, -0.0587, -0.0381, 0.0192, 0.0054],
+                    backgroundColor: function(ctx) { return ctx.raw >= 0 ? WC.green : WC.red; },
+                    borderWidth: 0, borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false },
+                    tooltip: { backgroundColor: '#722F37', padding: 12, cornerRadius: 8 }
+                },
+                scales: { x: { grid: { color: '#E8ECF0' } }, y: { grid: { display: false }, ticks: { font: { size: 10, family: "'IBM Plex Mono', monospace" } } } }
+            }
+        });
+
+        // ── CHART 3: HEATMAP ──
+        (function() {
+            var labels = ['f.acid', 'v.acid', 'citric', 'sugar', 'chlor', 'freeSO2', 'totSO2', 'dens', 'pH', 'sulph', 'alcohol'];
+            var corrData = [
+                [ 1.000, -0.261, 0.673, 0.115, 0.094, -0.011, 0.101, 0.682, -0.685, 0.184, -0.062],
+                [-0.261,  1.000,-0.544, 0.002, 0.061, 0.049, 0.076,-0.200, 0.230, 0.057,-0.206],
+                [ 0.673, -0.544, 1.000, 0.112, 0.008, 0.047, 0.038, 0.390,-0.546, 0.214, 0.095],
+                [ 0.115,  0.002, 0.112, 1.000,-0.026, 0.332, 0.426, 0.378,-0.165, 0.047, 0.022],
+                [ 0.094,  0.061, 0.008,-0.026, 1.000,-0.006, 0.034, 0.139, 0.007, 0.272,-0.138],
+                [-0.011,  0.049, 0.047, 0.332,-0.006, 1.000, 0.661, 0.137, 0.052, 0.036, 0.019],
+                [ 0.101,  0.076, 0.038, 0.426, 0.034, 0.661, 1.000, 0.188,-0.007, 0.048,-0.087],
+                [ 0.682, -0.200, 0.390, 0.378, 0.139, 0.137, 0.188, 1.000,-0.497, 0.140, 0.009],
+                [-0.685,  0.230,-0.546,-0.165, 0.007, 0.052,-0.007,-0.497, 1.000,-0.199, 0.117],
+                [ 0.184,  0.057, 0.214, 0.047, 0.272, 0.036, 0.048, 0.140,-0.199, 1.000, 0.104],
+                [-0.062, -0.206, 0.095, 0.022,-0.138, 0.019,-0.087, 0.009, 0.117, 0.104, 1.000]
+            ];
+            function getColor(val) {
+                var a = Math.abs(val);
+                if (val > 0) {
+                    if (a > 0.6) return { bg: '#722F37', text: '#FFF' };
+                    if (a > 0.3) return { bg: '#A04050', text: '#FFF' };
+                    if (a > 0.1) return { bg: '#C07080', text: '#FFF' };
+                    return { bg: '#E8C0C8', text: '#4A5568' };
+                } else {
+                    if (a > 0.6) return { bg: '#2E9E5B', text: '#FFF' };
+                    if (a > 0.3) return { bg: '#5CB87A', text: '#FFF' };
+                    if (a > 0.1) return { bg: '#90D4A8', text: '#1B365D' };
+                    return { bg: '#D0EDE0', text: '#4A5568' };
+                }
+            }
+            var container = document.getElementById('heatmapContainer');
+            var html = '<div class="heatmap-grid" style="grid-template-columns:55px repeat(11,1fr)">';
+            html += '<div class="heatmap-corner"></div>';
+            labels.forEach(function(l) { html += '<div class="heatmap-header">' + l + '</div>'; });
+            for (var i = 0; i < 11; i++) {
+                html += '<div class="heatmap-header">' + labels[i] + '</div>';
+                for (var j = 0; j < 11; j++) {
+                    var v = corrData[i][j];
+                    var c = getColor(v);
+                    var d = v === 1.0 ? '1.00' : v.toFixed(2);
+                    html += '<div class="heatmap-cell" style="background:' + c.bg + ';color:' + c.text + '" title="' + labels[i] + ' vs ' + labels[j] + ': ' + v.toFixed(3) + '">' + d + '</div>';
+                }
+            }
+            html += '</div>';
+            html += '<div class="heatmap-legend"><span class="heatmap-legend-label">-1.0</span><div class="heatmap-legend-bar" style="background:linear-gradient(90deg,#2E9E5B,#D0EDE0 40%,#E8C0C8 60%,#722F37)"></div><span class="heatmap-legend-label">+1.0</span></div>';
+            container.innerHTML = html;
+        })();
+
+        // ── CHART 4: SCATTER ──
+        (function() {
+            var real = [6,5,6,5,5,5,5,7,6,8,5,5,5,5,6,5,7,4,6,5,5,5,6,5,5,5,7,5,5,5,6,6,6,5,5,6,5,6,5,6,6,6,5,5,6,5,5,6,5,6,6,6,6,6,7,5,5,6,5,6,6,6,5,5,5,6,5,5,6,6,5,5,5,5,6,5,5,5,5,6,5,5,6,5,6,5,5,6,5,5,5,6,5,5,5,6,5,5,5,6,6];
+            var pred = [5.62,5.31,5.82,5.17,5.44,5.28,5.39,6.45,5.81,7.12,5.25,5.42,5.18,5.30,5.72,5.38,6.38,4.52,5.77,5.33,5.41,5.27,5.78,5.35,5.22,5.48,6.21,5.30,5.38,5.15,5.82,5.75,5.91,5.30,5.44,5.68,5.41,5.87,5.32,5.95,5.88,5.80,5.36,5.28,5.90,5.33,5.25,5.73,5.37,5.82,5.95,5.88,5.85,5.92,6.48,5.31,5.42,5.75,5.29,5.92,5.85,5.88,5.33,5.27,5.35,5.78,5.40,5.32,5.91,5.82,5.36,5.28,5.31,5.27,5.75,5.38,5.30,5.22,5.33,5.41,5.87,5.35,5.28,5.83,5.30,5.91,5.28,5.35,5.85,5.42,5.32,5.25,5.92,5.38,5.41,5.30,5.78,5.45,5.33,5.28,5.82,5.90];
+            var colors = real.map(function(r, i) {
+                var err = Math.abs(r - pred[i]);
+                if (err < 0.3) return WC.green;
+                if (err < 0.7) return WC.gold;
+                return WC.red;
+            });
+            new Chart(document.getElementById('chartScatter'), {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        { label: 'Predicciones', data: real.map(function(r, i) { return {x: r, y: pred[i]}; }), backgroundColor: colors, pointRadius: 5, pointHoverRadius: 7 },
+                        { label: 'Linea perfecta', data: [{x:2.5,y:2.5},{x:8.5,y:8.5}], type: 'line', borderColor: WC.slate, borderDash: [6,4], borderWidth: 2, pointRadius: 0, fill: false }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { weight: '600' } } },
+                        tooltip: { backgroundColor: '#722F37', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { if (c.datasetIndex===1) return ''; return 'Real: '+c.raw.x+' | Pred: '+c.raw.y.toFixed(2); } } }
+                    },
+                    scales: { x: { title: { display: true, text: 'Calidad Real', font: { weight: '700' } }, grid: { color: '#E8ECF0' }, min: 2.5, max: 8.5 }, y: { title: { display: true, text: 'Calidad Predicha', font: { weight: '700' } }, grid: { color: '#E8ECF0' }, min: 2.5, max: 8.5 } }
+                }
+            });
+        })();
+
+        // ── CHART 5: DISTRIBUCION ──
+        new Chart(document.getElementById('chartDistribution'), {
+            type: 'bar',
+            data: {
+                labels: ['3','4','5','6','7','8'],
+                datasets: [{ label: 'Frecuencia', data: [10,53,681,638,199,18], backgroundColor: ['#D0EDE0','#90D4A8','#5CB87A','#2E9E5B','#1B7A3C','#0D5525'], borderWidth: 0, borderRadius: 3 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#722F37', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { return c.raw + ' vinos'; } } } },
+                scales: { y: { beginAtZero: true, grid: { color: '#E8ECF0' }, title: { display: true, text: 'Frecuencia', font: { weight: '700' } } }, x: { grid: { display: false }, title: { display: true, text: 'Nota de Calidad', font: { weight: '700' } } } }
+            }
+        });
+    </script>
 </body>
 </html>

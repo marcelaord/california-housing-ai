@@ -57,12 +57,24 @@ FEATURES = {
     },
     "wine-quality": {
         "name": "Wine Quality",
-        "desc": "Prediccion de calidad de vinos",
+        "desc": "Prediccion de calidad de vinos tintos",
         "fields": [],
-        "feature_names": [],
-        "metrics": {"r2": "-", "mae": "-", "rmse": "-", "r2_pct": "0", "mae_pct": "0", "rmse_pct": "0"},
-        "algo": "Pendiente", "records": "-", "features_count": "-", "target": "-",
-        "ranges": {}
+        "feature_names": ["fixed acidity","volatile acidity","citric acid","residual sugar","chlorides","free sulfur dioxide","total sulfur dioxide","density","pH","sulphates","alcohol"],
+        "metrics": {"r2": "0.3360", "mae": "0.4700", "rmse": "0.6079", "r2_pct": "33.6", "mae_pct": "47", "rmse_pct": "61"},
+        "algo": "Polinomial G2 + Ridge", "records": "1,143", "features_count": "11", "target": "quality",
+        "ranges": {
+            "fixed acidity": {"min": 4.6, "max": 15.9, "label": "Acidez fija"},
+            "volatile acidity": {"min": 0.12, "max": 1.58, "label": "Acidez volatil"},
+            "citric acid": {"min": 0.0, "max": 1.0, "label": "Acido citrico"},
+            "residual sugar": {"min": 0.9, "max": 15.5, "label": "Azucar residual"},
+            "chlorides": {"min": 0.012, "max": 0.611, "label": "Cloruros"},
+            "free sulfur dioxide": {"min": 1, "max": 68, "label": "SO2 libre"},
+            "total sulfur dioxide": {"min": 6, "max": 289, "label": "SO2 total"},
+            "density": {"min": 0.9901, "max": 1.0037, "label": "Densidad"},
+            "pH": {"min": 2.74, "max": 4.01, "label": "pH"},
+            "sulphates": {"min": 0.33, "max": 2.0, "label": "Sulfatos"},
+            "alcohol": {"min": 8.4, "max": 14.9, "label": "Alcohol"},
+        }
     },
     "diabetes": {
         "name": "Diabetes",
