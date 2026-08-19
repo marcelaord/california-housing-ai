@@ -170,9 +170,9 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 </div>
                 <div class="metric-data">
-                    <p class="metric-val" id="metricR2">0.6136</p>
-                    <p class="metric-label">R2 Score</p>
-                    <div class="metric-bar"><div class="metric-bar-fill blue" style="width:61.4%"></div></div>
+                    <p class="metric-val">R2</p>
+                    <p class="metric-label">Lineal: 0.6136 | Polinomial: 0.6334</p>
+                    <div class="metric-bar"><div class="metric-bar-fill blue" style="width:63.3%"></div></div>
                 </div>
             </div>
             <div class="metric-block">
@@ -180,8 +180,8 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
                 <div class="metric-data">
-                    <p class="metric-val" id="metricMAE">$52,331</p>
-                    <p class="metric-label">Error Absoluto Medio</p>
+                    <p class="metric-val">MAE</p>
+                    <p class="metric-label">Lineal: $52,331 | Polinomial: $46,374</p>
                     <div class="metric-bar"><div class="metric-bar-fill gold" style="width:52%"></div></div>
                 </div>
             </div>
@@ -190,17 +190,20 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 </div>
                 <div class="metric-data">
-                    <p class="metric-val" id="metricRMSE">$71,155</p>
-                    <p class="metric-label">Error Cuadratico Medio</p>
+                    <p class="metric-val">RMSE</p>
+                    <p class="metric-label">Lineal: $71,155 | Polinomial: $69,306</p>
                     <div class="metric-bar"><div class="metric-bar-fill slate" style="width:71%"></div></div>
+                </div>
+            </div>
+        </div>
                 </div>
             </div>
         </div>
 
         <div class="info-band">
             <div class="info-item">
-                <span class="info-val">LinearRegression</span>
-                <span class="info-label">Algoritmo</span>
+                <span class="info-val">Lineal + Polinomial</span>
+                <span class="info-label">Modelos entrenados</span>
             </div>
             <div class="info-sep"></div>
             <div class="info-item">
@@ -214,8 +217,8 @@
             </div>
             <div class="info-sep"></div>
             <div class="info-item">
-                <span class="info-val mono">median_house_value</span>
-                <span class="info-label">Variable objetivo</span>
+                <span class="info-val mono">Polinomial gana 4-0</span>
+                <span class="info-label">Comparativa de metricas</span>
             </div>
         </div>
 

@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.pipeline import Pipeline
 import joblib
 import os
 
@@ -113,43 +114,121 @@ print("Medias originales vs estandarizadas:")
 for i, feat in enumerate(features):
     print(f"  {feat:>25s}: media={X_train[feat].mean():>10.2f}  -> escalada~0")
 
-# ── 9. ENTRENAMIENTO ──
-print("\n--- 9. ENTRENAMIENTO DEL MODELO ---")
-model = LinearRegression()
-model.fit(X_train_scaled, y_train)
-print("Modelo LinearRegression entrenado.")
+# ══════════════════════════════════════════════
+#  FASE B: MODELANOMIENTO Y COMPARATIVA
+# ══════════════════════════════════════════════
 
-# ── 10. EVALUACION ──
-print("\n--- 10. EVALUACION ---")
-y_pred = model.predict(X_test_scaled)
+# ── 9. MODELO 1: REGRESION LINEAL MULTIPLE ──
+print("\n--- 9. MODELO 1: REGRESION LINEAL MULTIPLE ---")
+model_lr = LinearRegression()
+model_lr.fit(X_train_scaled, y_train)
+print("LinearRegression entrenado.")
 
-r2 = r2_score(y_test, y_pred)
-mae = mean_absolute_error(y_test, y_pred)
-mse = mean_squared_error(y_test, y_pred)
-rmse = np.sqrt(mse)
+y_pred_lr = model_lr.predict(X_test_scaled)
 
-print(f"  R2 Score: {r2:.4f}")
-print(f"  MAE:      ${mae:,.2f}")
-print(f"  MSE:      {mse:,.2f}")
-print(f"  RMSE:     ${rmse:,.2f}")
+r2_lr = r2_score(y_test, y_pred_lr)
+mae_lr = mean_absolute_error(y_test, y_pred_lr)
+mse_lr = mean_squared_error(y_test, y_pred_lr)
+rmse_lr = np.sqrt(mse_lr)
 
-# ── 11. COEFICIENTES DEL MODELO ──
-print("\n--- 11. COEFICIENTES ---")
-coef_df = pd.DataFrame({
-    "Variable": features,
-    "Coeficiente": model.coef_.round(2)
-}).sort_values("Coeficiente", key=abs, ascending=False)
+print(f"\n  R2 Score: {r2_lr:.4f}")
+print(f"  MAE:      ${mae_lr:,.2f}")
+print(f"  MSE:      {mse_lr:,.2f}")
+print(f"  RMSE:     ${rmse_lr:,.2f}")
 
-print(coef_df.to_string(index=False))
-print(f"\nIntercepto: {model.intercept_:,.2f}")
+# ── 10. MODELO 2: REGRESION POLINOMIAL (grado 2) ──
+print("\n--- 10. MODELO 2: REGRESION POLINOMIAL (grado 2) ---")
+poly_pipeline = Pipeline([
+    ("poly", PolynomialFeatures(degree=2, include_bias=False)),
+    ("scaler", StandardScaler()),
+    ("lr", LinearRegression())
+])
+poly_pipeline.fit(X_train, y_train)
+print("PolynomialFeatures(degree=2) + LinearRegression entrenado.")
+
+y_pred_poly = poly_pipeline.predict(X_test)
+
+r2_poly = r2_score(y_test, y_pred_poly)
+mae_poly = mean_absolute_error(y_test, y_pred_poly)
+mse_poly = mean_squared_error(y_test, y_pred_poly)
+rmse_poly = np.sqrt(mse_poly)
+
+print(f"\n  R2 Score: {r2_poly:.4f}")
+print(f"  MAE:      ${mae_poly:,.2f}")
+print(f"  MSE:      {mse_poly:,.2f}")
+print(f"  RMSE:     ${rmse_poly:,.2f}")
+
+# ── 11. COMPARATIVA DE MODELOS ──
+print("\n" + "=" * 60)
+print("  COMPARATIVA DE MODELOS")
+print("=" * 60)
+print(f"{'Metrica':<15} {'Lineal':>18} {'Polinomial':>18} {'Mejor':>12}")
+print("-" * 63)
+
+winner_count = {"Lineal": 0, "Polinomial": 0}
+
+metrics = [
+    ("R2 Score", r2_lr, r2_poly, True),
+    ("MAE", mae_lr, mae_poly, False),
+    ("MSE", mse_lr, mse_poly, False),
+    ("RMSE", rmse_lr, rmse_poly, False),
+]
+
+for name, val_lr, val_poly, higher_better in metrics:
+    if higher_better:
+        best = "Lineal" if val_lr >= val_poly else "Polinomial"
+    else:
+        best = "Lineal" if val_lr <= val_poly else "Polinomial"
+    winner_count[best] += 1
+
+    if name == "R2 Score":
+        lr_str = f"{val_lr:.4f}"
+        poly_str = f"{val_poly:.4f}"
+    else:
+        lr_str = f"${val_lr:,.2f}"
+        poly_str = f"${val_poly:,.2f}"
+
+    print(f"{name:<15} {lr_str:>18} {poly_str:>18} {best:>12}")
+
+print("-" * 63)
+print(f"\nMarcador: Lineal {winner_count['Lineal']} - {winner_count['Polinomial']} Polinomial")
+
+mejor = max(winner_count, key=winner_count.get)
+print(f"Mejor modelo global: {mejor}")
+
+# ── 12. COEFICIENTES DEL MEJOR MODELO ──
+print(f"\n--- 12. COEFICIENTES ({mejor}) ---")
+if mejor == "Lineal":
+    coef_df = pd.DataFrame({
+        "Variable": features,
+        "Coeficiente": model_lr.coef_.round(2)
+    }).sort_values("Coeficiente", key=abs, ascending=False)
+    print(coef_df.to_string(index=False))
+    print(f"\nIntercepto: {model_lr.intercept_:,.2f}")
+else:
+    poly_feature_names = poly_pipeline.named_steps["poly"].get_feature_names_out(features)
+    coefs = poly_pipeline.named_steps["lr"].coef_
+    coef_df = pd.DataFrame({
+        "Variable": poly_feature_names,
+        "Coeficiente": coefs.round(2)
+    })
+    top = coef_df.reindex(coef_df["Coeficiente"].abs().sort_values(ascending=False).index).head(15)
+    print(f"(Mostrando top 15 de {len(coef_df)} coeficientes)")
+    print(top.to_string(index=False))
+    print(f"\nIntercepto: {poly_pipeline.named_steps['lr'].intercept_:,.2f}")
 
 # ── GUARDADO ──
 model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
+poly_path = os.path.join(os.path.dirname(__file__), "model_poly.pkl")
 scaler_path = os.path.join(os.path.dirname(__file__), "scaler.pkl")
-joblib.dump(model, model_path)
+
+joblib.dump(model_lr, model_path)
+joblib.dump(poly_pipeline, poly_path)
 joblib.dump(scaler, scaler_path)
-print(f"\nModelo guardado: {model_path}")
+
+print(f"\nModelo Lineal guardado:  {model_path}")
+print(f"Modelo Polinomial guardado: {poly_path}")
 print(f"Scaler guardado: {scaler_path}")
 print("=" * 60)
-print("  FASE A COMPLETADA")
+print("  FASE A + B COMPLETADAS")
 print("=" * 60)

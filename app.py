@@ -9,13 +9,19 @@ BASE_DIR = os.path.dirname(__file__)
 
 MODELS = {}
 SCALERS = {}
+MODEL_TYPES = {}
 
 def load_models():
     for name in ["california-housing", "wine-quality", "diabetes"]:
         model_path = os.path.join(BASE_DIR, name, "model.pkl")
+        poly_path = os.path.join(BASE_DIR, name, "model_poly.pkl")
         scaler_path = os.path.join(BASE_DIR, name, "scaler.pkl")
-        if os.path.exists(model_path):
+        if os.path.exists(poly_path):
+            MODELS[name] = joblib.load(poly_path)
+            MODEL_TYPES[name] = "poly"
+        elif os.path.exists(model_path):
             MODELS[name] = joblib.load(model_path)
+            MODEL_TYPES[name] = "linear"
         if os.path.exists(scaler_path):
             SCALERS[name] = joblib.load(scaler_path)
 
@@ -101,7 +107,7 @@ def predict(project):
             values.append(val)
 
         X = np.array([values])
-        if project in SCALERS:
+        if MODEL_TYPES.get(project) == "linear" and project in SCALERS:
             X = SCALERS[project].transform(X)
         prediction = MODELS[project].predict(X)[0]
         if prediction < 0:
