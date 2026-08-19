@@ -114,34 +114,96 @@ models = build_models()
 
 # ── UI ───────────────────────────────────────────────────────────────────────
 st.markdown('<p class="main-header">🏥 Predicción de Progresión de Diabetes</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Modelos de Regresión Lineal y Polinomial | Dataset sklearn (442 registros)</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Predicción cuantitativa de la progresión de la enfermedad un año después del inicio, basada en 10 variables basales | Regresión Lineal y Polinomial</p>', unsafe_allow_html=True)
 
 tab_prediccion, tab_datos, tab_lineal, tab_polinomial = st.tabs([
     "🔮 Predicción", "📊 Dataset", "📈 Modelo Lineal", "🌀 Modelo Polinomial"
 ])
 
+# Mapeo de sexo: valores reales del dataset para masculino y femenino
+SEX_VALUES = {
+    "Masculino": df_raw[df_raw["sex"] == df_raw["sex"].unique()[0]]["sex"].iloc[0],
+    "Femenino": df_raw[df_raw["sex"] == df_raw["sex"].unique()[-1]]["sex"].iloc[0],
+}
+
+# Descripciones de variables
+VAR_DESCRIPTIONS = {
+    "age": "Edad del paciente (años, escalado)",
+    "sex": "Sexo del paciente (Masculino / Femenino)",
+    "bmi": "Índice de Masa Corporal (peso/altura²)",
+    "bp": "Presión arterial promedio (mmHg)",
+    "s1": "Colesterol sérico total (mg/dL)",
+    "s2": "Lipoproteínas de baja densidad - LDL (mg/dL)",
+    "s3": "Lipoproteínas de alta densidad - HDL (mg/dL)",
+    "s4": "Relación colesterol total / HDL",
+    "s5": "Logaritmo de triglicéridos séricos",
+    "s6": "Nivel de glucosa en sangre (mg/dL)",
+}
+
 # ────────────────────────── PREDICCIÓN ──────────────────────────────────────
 with tab_prediccion:
     st.subheader("Predicción de progresión de diabetes (1 año)")
+    st.info("Ingrese las 10 variables basales del paciente para predecir la progresión cuantitativa de la enfermedad diabetes un año después del inicio.")
 
     with st.sidebar:
-        st.header("🩺 Variables Basales")
+        st.header("🩺 Variables Basales del Paciente")
 
         st.markdown("**Demográficas**")
-        age = st.slider("Edad (age)", -0.2, 0.2, 0.0, step=0.01)
-        sex = st.slider("Sexo (sex)", -0.2, 0.2, 0.0, step=0.01)
+        age = st.slider(
+            "Edad",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["age"]
+        )
+        sex_option = st.selectbox(
+            "Sexo",
+            options=list(SEX_VALUES.keys()),
+            help=VAR_DESCRIPTIONS["sex"]
+        )
+        sex = SEX_VALUES[sex_option]
 
         st.markdown("**Antropométricas**")
-        bmi = st.slider("IMC (bmi)", -0.2, 0.2, 0.0, step=0.01)
-        bp = st.slider("Presión arterial (bp)", -0.2, 0.2, 0.0, step=0.01)
+        bmi = st.slider(
+            "IMC (Índice de Masa Corporal)",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["bmi"]
+        )
+        bp = st.slider(
+            "Presión Arterial Promedio",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["bp"]
+        )
 
-        st.markdown("**Bioquímicas**")
-        s1 = st.slider("Colesterol total (s1)", -0.2, 0.2, 0.0, step=0.01)
-        s2 = st.slider("LDL (s2)", -0.2, 0.2, 0.0, step=0.01)
-        s3 = st.slider("HDL (s3)", -0.2, 0.2, 0.0, step=0.01)
-        s4 = st.slider("Colesterol/HDL (s4)", -0.2, 0.2, 0.0, step=0.01)
-        s5 = st.slider("Triglicéridos log (s5)", -0.2, 0.2, 0.0, step=0.01)
-        s6 = st.slider("Glucosa (s6)", -0.2, 0.2, 0.0, step=0.01)
+        st.markdown("**Bioquímicas (Sangre)**")
+        s1 = st.slider(
+            "Colesterol Total",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s1"]
+        )
+        s2 = st.slider(
+            "LDL (Colesterol malo)",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s2"]
+        )
+        s3 = st.slider(
+            "HDL (Colesterol bueno)",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s3"]
+        )
+        s4 = st.slider(
+            "Relación Colesterol / HDL",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s4"]
+        )
+        s5 = st.slider(
+            "Triglicéridos (log)",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s5"]
+        )
+        s6 = st.slider(
+            "Glucosa en Sangre",
+            -0.2, 0.2, 0.0, step=0.01,
+            help=VAR_DESCRIPTIONS["s6"]
+        )
 
         st.info("Los valores están escalados (mean-centered y std-scaled). Rango típico: -0.2 a 0.2")
         predict_btn = st.button("🔍 Predecir", type="primary", use_container_width=True)
@@ -197,15 +259,16 @@ with tab_prediccion:
         with st.expander("Ver resumen de las variables ingresadas", expanded=False):
             input_display = pd.DataFrame({
                 "Variable": ["Edad", "Sexo", "IMC", "Presión Arterial",
-                             "Colesterol Total (s1)", "LDL (s2)", "HDL (s3)",
-                             "Colesterol/HDL (s4)", "Triglicéridos (s5)", "Glucosa (s6)"],
-                "Valor": [age, sex, bmi, bp, s1, s2, s3, s4, s5, s6],
+                             "Colesterol Total", "LDL (Colesterol malo)", "HDL (Colesterol bueno)",
+                             "Relación Colesterol/HDL", "Triglicéridos (log)", "Glucosa en Sangre"],
+                "Valor": [age, sex_option, bmi, bp, s1, s2, s3, s4, s5, s6],
             })
             st.dataframe(input_display, use_container_width=True, hide_index=True)
 
 # ────────────────────────── DATOS ────────────────────────────────────────────
 with tab_datos:
     st.subheader("Diabetes Dataset (sklearn)")
+    st.markdown("**Objetivo:** Predecir la progresión cuantitativa de la enfermedad diabetes un año después del inicio, basada en 10 variables basales.")
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Registros", f"{len(df_raw):,}")
@@ -224,13 +287,20 @@ with tab_datos:
         st.dataframe(df_raw.describe().round(3), use_container_width=True)
 
     st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-    st.subheader("Distribuciones")
+    st.subheader("Distribuciones de Variables")
+
+    # Nombres legibles para los gráficos
+    FEATURE_NAMES = {
+        "age": "Edad", "sex": "Sexo", "bmi": "IMC", "bp": "Presión Arterial",
+        "s1": "Colesterol Total", "s2": "LDL", "s3": "HDL",
+        "s4": "Colesterol/HDL", "s5": "Triglicéridos", "s6": "Glucosa",
+    }
 
     fig, axes = plt.subplots(2, 5, figsize=(20, 8))
     for i, feat in enumerate(FEATURES):
         ax = axes[i // 5, i % 5]
         ax.hist(df[feat], bins=30, edgecolor="black", alpha=0.7)
-        ax.set_title(feat)
+        ax.set_title(FEATURE_NAMES.get(feat, feat))
     plt.tight_layout()
     st.pyplot(fig)
 
@@ -238,7 +308,9 @@ with tab_datos:
     st.subheader("Mapa de Correlaciones")
 
     fig_corr, ax_corr = plt.subplots(figsize=(10, 8))
-    corr_matrix = df[FEATURES + ["target"]].corr()
+    corr_df = df[FEATURES + ["target"]].copy()
+    corr_df.columns = [FEATURE_NAMES.get(c, c) for c in corr_df.columns]
+    corr_matrix = corr_df.corr()
     sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", ax=ax_corr)
     plt.tight_layout()
     st.pyplot(fig_corr)
@@ -271,6 +343,7 @@ with tab_lineal:
         st.markdown("**Importancia de variables (normalizada)**")
         imp_df = models["linear"]["importances"].reset_index()
         imp_df.columns = ["Feature", "Importance"]
+        imp_df["Feature"] = imp_df["Feature"].map(FEATURE_NAMES).fillna(imp_df["Feature"])
         fig_imp, ax_imp = plt.subplots(figsize=(10, 6))
         sns.barplot(data=imp_df, x="Importance", y="Feature", ax=ax_imp)
         plt.tight_layout()
@@ -279,7 +352,7 @@ with tab_lineal:
     with col_f2:
         st.markdown("**Coeficientes del modelo**")
         coef_df = pd.DataFrame({
-            "Variable": FEATURES,
+            "Variable": [FEATURE_NAMES.get(f, f) for f in FEATURES],
             "Coeficiente": np.round(models["linear"]["model"].coef_, 2),
         }).sort_values("Coeficiente", key=abs, ascending=False)
         st.dataframe(coef_df, use_container_width=True, hide_index=True)
