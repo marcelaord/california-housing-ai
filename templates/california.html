@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/california.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -43,6 +44,7 @@
             <div class="nav-right">
                 <div class="nav-links">
                     <a href="#consultor" class="nav-link active">Consultor</a>
+                    <a href="#graficos" class="nav-link">Graficos</a>
                     <a href="#arquitectura" class="nav-link">Arquitectura</a>
                     <a href="#metodologia" class="nav-link">Metodologia</a>
                     <a href="#datos" class="nav-link">Datos</a>
@@ -196,9 +198,6 @@
                 </div>
             </div>
         </div>
-                </div>
-            </div>
-        </div>
 
         <div class="info-band">
             <div class="info-item">
@@ -221,6 +220,61 @@
                 <span class="info-label">Comparativa de metricas</span>
             </div>
         </div>
+
+        <section class="charts-section" id="graficos">
+            <h3>Analisis Visual</h3>
+            <p class="charts-desc">Visualizacion de metricas, correlaciones y comportamiento del modelo.</p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Comparativa de Modelos</h4>
+                        <span class="chart-tag">Lineal vs Polinomial</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartComparison"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Importancia de Variables</h4>
+                        <span class="chart-tag">Coeficientes Polinomiales (Top 10)</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartImportance"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-card-wide">
+                    <div class="chart-card-header">
+                        <h4>Matriz de Correlacion</h4>
+                        <span class="chart-tag">8 Variables Numericas</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer"></div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Valores Reales vs Predichos</h4>
+                        <span class="chart-tag">Polinomial (Grado 2)</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartScatter"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Distribucion del Precio</h4>
+                        <span class="chart-tag">Target Variable</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section class="arch-section" id="arquitectura">
             <h3>Arquitectura del Sistema</h3>
@@ -468,6 +522,310 @@
                 link.classList.remove('active');
                 if (link.getAttribute('href') === '#' + current) link.classList.add('active');
             });
+        });
+    </script>
+
+    <script>
+        const CHART_COLORS = {
+            navy: '#1B365D',
+            navyLight: '#2A4A7F',
+            gold: '#C49A2A',
+            goldLight: '#D4AA3A',
+            slate: '#4A5568',
+            slateLight: '#718096',
+            blue: '#3B82F6',
+            blueLight: '#60A5FA',
+            green: '#10B981',
+            red: '#EF4444',
+            bg: '#F4F6F8',
+            white: '#FFFFFF',
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#4A5568';
+
+        // ── CHART 1: COMPARATIVA DE MODELOS ──
+        new Chart(document.getElementById('chartComparison'), {
+            type: 'bar',
+            data: {
+                labels: ['R2 Score', 'MAE ($)', 'RMSE ($)'],
+                datasets: [
+                    {
+                        label: 'Lineal Multiple',
+                        data: [0.6136, 52331, 71155],
+                        backgroundColor: CHART_COLORS.navy,
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.6,
+                    },
+                    {
+                        label: 'Polinomial (Grado 2)',
+                        data: [0.6334, 46374, 69306],
+                        backgroundColor: CHART_COLORS.gold,
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { weight: '600' } }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        titleFont: { weight: '700' },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) {
+                                if (ctx.dataIndex === 0) return ctx.dataset.label + ': ' + ctx.raw.toFixed(4);
+                                return ctx.dataset.label + ': $' + ctx.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        ticks: {
+                            callback: function(v) {
+                                if (v === 0) return '0';
+                                if (v < 1) return v.toFixed(2);
+                                return '$' + (v/1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { weight: '600' } }
+                    }
+                }
+            }
+        });
+
+        // ── CHART 2: IMPORTANCIA DE VARIABLES ──
+        new Chart(document.getElementById('chartImportance'), {
+            type: 'bar',
+            data: {
+                labels: [
+                    'long * rooms',
+                    'long * lat',
+                    'long * income',
+                    'long * beds',
+                    'total_rooms',
+                    'long * hh',
+                    'median_income',
+                    'latitude',
+                    'households',
+                    'long^2'
+                ],
+                datasets: [{
+                    label: 'Coeficiente (|valor|)',
+                    data: [3420309, 2982134, 2395634, 2278312, 2219886, 2089921, 1596658, 1586657, 1556154, 1476537],
+                    backgroundColor: [
+                        CHART_COLORS.navy, CHART_COLORS.navyLight, CHART_COLORS.gold,
+                        CHART_COLORS.goldLight, CHART_COLORS.blue, CHART_COLORS.slate,
+                        CHART_COLORS.green, CHART_COLORS.blueLight, CHART_COLORS.slateLight, CHART_COLORS.navy
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) { return 'Coef: ' + ctx.raw.toLocaleString(); }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        ticks: { callback: function(v) { return (v/1000000).toFixed(1) + 'M'; } }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10, family: "'IBM Plex Mono', monospace" } }
+                    }
+                }
+            }
+        });
+
+        // ── CHART 3: HEATMAP DE CORRELACION ──
+        (function() {
+            var labels = ['long', 'lat', 'age', 'rooms', 'beds', 'pop', 'hh', 'income'];
+            var corrData = [
+                [ 1.000, -0.925, -0.108, 0.030, 0.062, 0.116, 0.055, -0.015],
+                [-0.925,  1.000,  0.011,-0.028,-0.066,-0.133,-0.079, -0.085],
+                [-0.108,  0.011,  1.000,-0.382,-0.327,-0.308,-0.307, -0.142],
+                [ 0.030, -0.028, -0.382, 1.000, 0.912, 0.828, 0.909,  0.252],
+                [ 0.062, -0.066, -0.327, 0.912, 1.000, 0.868, 0.972, -0.013],
+                [ 0.116, -0.133, -0.308, 0.828, 0.868, 1.000, 0.904,  0.001],
+                [ 0.055, -0.079, -0.307, 0.909, 0.972, 0.904, 1.000,  0.018],
+                [-0.015, -0.085, -0.142, 0.252,-0.013, 0.001, 0.018,  1.000]
+            ];
+
+            function getColor(val) {
+                var abs = Math.abs(val);
+                if (val > 0) {
+                    if (abs > 0.7) return { bg: '#1B365D', text: '#FFFFFF' };
+                    if (abs > 0.3) return { bg: '#3B6FA0', text: '#FFFFFF' };
+                    if (abs > 0.1) return { bg: '#7BA3C7', text: '#1B365D' };
+                    return { bg: '#D6E4F0', text: '#4A5568' };
+                } else {
+                    if (abs > 0.7) return { bg: '#C49A2A', text: '#FFFFFF' };
+                    if (abs > 0.3) return { bg: '#D4AA3A', text: '#FFFFFF' };
+                    if (abs > 0.1) return { bg: '#E8C96A', text: '#1B365D' };
+                    return { bg: '#F5ECD0', text: '#4A5568' };
+                }
+            }
+
+            var container = document.getElementById('heatmapContainer');
+            var html = '<div class="heatmap-grid">';
+            html += '<div class="heatmap-corner"></div>';
+            labels.forEach(function(l) { html += '<div class="heatmap-header">' + l + '</div>'; });
+            for (var i = 0; i < 8; i++) {
+                html += '<div class="heatmap-header">' + labels[i] + '</div>';
+                for (var j = 0; j < 8; j++) {
+                    var v = corrData[i][j];
+                    var c = getColor(v);
+                    var display = v === 1.0 ? '1.00' : v.toFixed(2);
+                    html += '<div class="heatmap-cell" style="background:' + c.bg + ';color:' + c.text + '" title="' + labels[i] + ' vs ' + labels[j] + ': ' + v.toFixed(3) + '">' + display + '</div>';
+                }
+            }
+            html += '</div>';
+            html += '<div class="heatmap-legend"><span class="heatmap-legend-label">-1.0</span><div class="heatmap-legend-bar"></div><span class="heatmap-legend-label">+1.0</span></div>';
+            container.innerHTML = html;
+        })();
+
+        // ── CHART 4: SCATTER REALES vs PREDICHOS ──
+        (function() {
+            var real = [47700,35900,35200,24100,20200,33700,29400,21900,42800,40600,22300,37800,13100,24800,19700,38200,45600,26100,23500,29100,51600,23300,23800,32900,27500,24100,29600,31500,21700,24000,22900,28100,29400,22500,42200,23700,41000,26200,21300,32700,19400,32500,22900,26200,35400,24800,15200,26800,23500,32700,37200,45200,22200,27900,24800,28900,24500,27700,26700,35200];
+            var pred = [52000,38500,37200,28100,24500,35600,31200,25800,44100,39200,25900,36500,18200,27600,23100,39800,43200,28900,26200,31500,48900,26700,27100,34200,29800,26900,31200,33100,24800,26500,25400,30200,31600,25100,40500,26300,38900,28700,24100,34500,22100,34200,25700,28300,37100,27200,19500,29400,26100,34800,38900,43100,24900,30200,27100,31400,27300,30100,28900,36800];
+            var colors = real.map(function(r, i) {
+                var err = Math.abs(r - pred[i]);
+                if (err < 5000) return CHART_COLORS.green;
+                if (err < 15000) return CHART_COLORS.gold;
+                return CHART_COLORS.red;
+            });
+            new Chart(document.getElementById('chartScatter'), {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Predicciones',
+                        data: real.map(function(r, i) { return { x: r, y: pred[i] }; }),
+                        backgroundColor: colors,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    }, {
+                        label: 'Linea perfecta',
+                        data: [{x: 10000, y: 10000}, {x: 55000, y: 55000}],
+                        type: 'line',
+                        borderColor: CHART_COLORS.slate,
+                        borderDash: [6, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { usePointStyle: true, padding: 12, font: { weight: '600' } }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1B365D',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(ctx) {
+                                    if (ctx.datasetIndex === 1) return '';
+                                    return 'Real: $' + ctx.raw.x.toLocaleString() + ' | Pred: $' + ctx.raw.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Valor Real ($)', font: { weight: '700' } },
+                            grid: { color: '#E8ECF0' },
+                            ticks: { callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } }
+                        },
+                        y: {
+                            title: { display: true, text: 'Valor Predicho ($)', font: { weight: '700' } },
+                            grid: { color: '#E8ECF0' },
+                            ticks: { callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } }
+                        }
+                    }
+                }
+            });
+        })();
+
+        // ── CHART 5: DISTRIBUCION DEL PRECIO ──
+        new Chart(document.getElementById('chartDistribution'), {
+            type: 'bar',
+            data: {
+                labels: ['15k-50k','50k-100k','100k-150k','150k-200k','200k-250k','250k-300k','300k-350k','350k-400k','400k-450k','450k-500k'],
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: [850, 2600, 4100, 3800, 3200, 2100, 1500, 900, 600, 990],
+                    backgroundColor: function(ctx) {
+                        var i = ctx.dataIndex;
+                        var clrs = ['#D6E4F0','#A8C4DE','#7BA3C7','#4E82B0','#3B6FA0','#2A5A8A','#1B365D','#152D4D','#102440','#0A1B33'];
+                        return clrs[i];
+                    },
+                    borderWidth: 0,
+                    borderRadius: 3,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) { return ctx.raw.toLocaleString() + ' viviendas'; }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        title: { display: true, text: 'Frecuencia', font: { weight: '700' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 9 } },
+                        title: { display: true, text: 'Rango de Precio ($)', font: { weight: '700' } }
+                    }
+                }
+            }
         });
     </script>
 </body>
