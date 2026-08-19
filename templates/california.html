@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>California Housing Institute</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/california.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <nav class="project-nav">
+        <div class="pn-inner">
+            <span class="pn-label">Proyectos:</span>
+            <div class="pn-links">
+                <a href="/" class="pn-link active">California Housing</a>
+                <a href="/wine-quality" class="pn-link">Wine Quality</a>
+                <a href="/diabetes" class="pn-link">Diabetes</a>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <div class="nav-left">
+                <div class="nav-logo">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 21h18"/>
+                        <path d="M5 21V7l8-4v18"/>
+                        <path d="M19 21V11l-6-4"/>
+                        <path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/>
+                        <path d="M13 9h3"/><path d="M13 12h3"/><path d="M13 15h3"/>
+                    </svg>
+                </div>
+                <div class="nav-brand-group">
+                    <span class="nav-brand">California Housing Institute</span>
+                    <span class="nav-tagline">Real Estate Analytics Division</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#consultor" class="nav-link active">Consultor</a>
+                    <a href="#graficos" class="nav-link">Graficos</a>
+                    <a href="#arquitectura" class="nav-link">Arquitectura</a>
+                    <a href="#metodologia" class="nav-link">Metodologia</a>
+                    <a href="#datos" class="nav-link">Datos</a>
+                </div>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    Modelo Activo
+                    <span class="nav-version">v1.0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="consultor">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                Regresion Lineal Multiple
+            </div>
+            <h1>Estimador de Precios<br>de Viviendas</h1>
+            <p class="hero-sub">Sistema basado en machine learning para la estimacion de valores de mercado de viviendas en el estado de California, entrenado con 20,640 registros del dataset California Housing Prices.</p>
+        </div>
+
+        <div class="predictor-card">
+            <div class="pc-header">
+                <div class="pc-title-row">
+                    <div class="pc-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <div>
+                        <h2>Consultor de Precios</h2>
+                        <p>Complete los campos para obtener una estimacion del valor de mercado</p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="predictForm" autocomplete="off">
+                <p class="form-note">Los valores corresponden a un bloque censal promedio del estado de California.</p>
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="longitude">Longitud</label>
+                        <div class="input-wrap">
+                            <input type="number" id="longitude" step="any" value="-118.5" min="-124.35" max="-114.31" required>
+                            <span class="input-tag">°W</span>
+                        </div>
+                        <span class="field-range">Rango: -124.35 a -114.31</span>
+                    </div>
+                    <div class="field">
+                        <label for="latitude">Latitud</label>
+                        <div class="input-wrap">
+                            <input type="number" id="latitude" step="any" value="34.05" min="32.54" max="41.95" required>
+                            <span class="input-tag">°N</span>
+                        </div>
+                        <span class="field-range">Rango: 32.54 a 41.95</span>
+                    </div>
+                    <div class="field">
+                        <label for="housing_median_age">Edad Media</label>
+                        <div class="input-wrap">
+                            <input type="number" id="housing_median_age" step="any" value="30" min="1" max="52" required>
+                            <span class="input-tag">años</span>
+                        </div>
+                        <span class="field-range">Rango: 1 a 52</span>
+                    </div>
+                    <div class="field">
+                        <label for="total_rooms">Habitaciones (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="total_rooms" step="1" value="2100" min="2" max="39320" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Rango: 2 a 39,320</span>
+                    </div>
+                    <div class="field">
+                        <label for="total_bedrooms">Dormitorios (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="total_bedrooms" step="1" value="435" min="1" max="6445" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Rango: 1 a 6,445</span>
+                    </div>
+                    <div class="field">
+                        <label for="population">Poblacion (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="population" step="1" value="1160" min="3" max="35682" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Rango: 3 a 35,682</span>
+                    </div>
+                    <div class="field">
+                        <label for="households">Hogares (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="households" step="1" value="400" min="1" max="6082" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Rango: 1 a 6,082</span>
+                    </div>
+                    <div class="field">
+                        <label for="median_income">Ingreso Medio</label>
+                        <div class="input-wrap">
+                            <input type="number" id="median_income" step="any" value="3.8" min="0.5" max="15.0" required>
+                            <span class="input-tag">x10k</span>
+                        </div>
+                        <span class="field-range">Rango: 0.5 a 15.0</span>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnPredict">
+                    <span class="btn-shine"></span>
+                    <span class="btn-inner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        Ejecutar estimacion
+                    </span>
+                </button>
+            </form>
+
+            <div id="result" class="result hidden">
+                <div class="result-inner">
+                    <div class="result-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <p class="result-label">Precio estimado de la vivienda</p>
+                    <p class="result-price" id="predictedPrice"></p>
+                    <p class="result-sub">Calculado con Regresion Lineal Multiple</p>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span id="errorMsg"></span>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="metrics-band">
+            <div class="metric-block">
+                <div class="metric-icon blue">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">R2</p>
+                    <p class="metric-label">Lineal: 0.6136 | Polinomial: 0.6334</p>
+                    <div class="metric-bar"><div class="metric-bar-fill blue" style="width:63.3%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon gold">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">MAE</p>
+                    <p class="metric-label">Lineal: $52,331 | Polinomial: $46,374</p>
+                    <div class="metric-bar"><div class="metric-bar-fill gold" style="width:52%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon slate">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">RMSE</p>
+                    <p class="metric-label">Lineal: $71,155 | Polinomial: $69,306</p>
+                    <div class="metric-bar"><div class="metric-bar-fill slate" style="width:71%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-band">
+            <div class="info-item">
+                <span class="info-val">Lineal + Polinomial</span>
+                <span class="info-label">Modelos entrenados</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">20,640</span>
+                <span class="info-label">Registros de entrenamiento</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">8</span>
+                <span class="info-label">Variables de entrada</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val mono">Polinomial gana 4-0</span>
+                <span class="info-label">Comparativa de metricas</span>
+            </div>
+        </div>
+
+        <section class="charts-section" id="graficos">
+            <h3>Analisis Visual</h3>
+            <p class="charts-desc">Visualizacion de metricas, correlaciones y comportamiento del modelo.</p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Comparativa de Modelos</h4>
+                        <span class="chart-tag">Lineal vs Polinomial</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartComparison"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Importancia de Variables</h4>
+                        <span class="chart-tag">Coeficientes Polinomiales (Top 10)</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartImportance"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-card-wide">
+                    <div class="chart-card-header">
+                        <h4>Matriz de Correlacion</h4>
+                        <span class="chart-tag">8 Variables Numericas</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer"></div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Valores Reales vs Predichos</h4>
+                        <span class="chart-tag">Polinomial (Grado 2)</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartScatter"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Distribucion del Precio</h4>
+                        <span class="chart-tag">Target Variable</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="arch-section" id="arquitectura">
+            <h3>Arquitectura del Sistema</h3>
+            <p class="arch-desc">Estructura del proyecto y funcion de cada componente.</p>
+
+            <div class="arch-flow">
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon frontend">FE</div>
+                    <span>Frontend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon backend">BE</div>
+                    <span>Backend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon model">ML</div>
+                    <span>Modelo</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon data">DB</div>
+                    <span>Datos</span>
+                </div>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge frontend">Frontend</div>
+                        <span class="arch-tech">HTML + CSS + JavaScript</span>
+                    </div>
+                    <p class="arch-card-desc">Interfaz visual del usuario. Formulario interactivo con validacion de rangos, resultados dinamicos y navegacion por secciones.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">H</span> templates/index.html <span class="arch-file-role">Estructura y formulario</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">C</span> static/style.css <span class="arch-file-role">Estilos institucionales</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">J</span> index.html &lt;script&gt; <span class="arch-file-role">Validacion y fetch API</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge backend">Backend</div>
+                        <span class="arch-tech">Python + Flask</span>
+                    </div>
+                    <p class="arch-card-desc">Servidor web que recibe las peticiones del frontend, aplica el modelo de ML y devuelve la prediccion en formato JSON.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> app.py <span class="arch-file-role">Rutas / y /predict</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">R</span> requirements.txt <span class="arch-file-role">Dependencias Python</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">W</span> Procfile <span class="arch-file-role">Configuracion Render</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge model">Modelo ML</div>
+                        <span class="arch-tech">scikit-learn + joblib</span>
+                    </div>
+                    <p class="arch-card-desc">Modelo de Regresion Lineal Multiple entrenado con 20,640 registros. Serializado en archivo .pkl para su carga en produccion.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> train_model.py <span class="arch-file-role">Entrenamiento del modelo</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">B</span> model.pkl <span class="arch-file-role">Modelo serializado</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge data">Base de Datos</div>
+                        <span class="arch-tech">CSV (California Housing)</span>
+                    </div>
+                    <p class="arch-card-desc">Dataset de Kaggle con 20,640 registros de viviendas de California del censo de 1990. 8 variables numericas de entrada y 1 variable objetivo.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">D</span> housing.csv <span class="arch-file-role">20,640 registros, 9 columnas</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arch-deploy">
+                <h4>Despliegue</h4>
+                <div class="arch-deploy-grid">
+                    <div class="arch-deploy-item">
+                        <div class="arch-deploy-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                        </div>
+                        <div>
+                            <p class="arch-deploy-name">GitHub</p>
+                            <p class="arch-deploy-detail">Repositorio de codigo fuente</p>
+                        </div>
+                    </div>
+                    <div class="arch-deploy-item">
+                        <div class="arch-deploy-icon render">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <div>
+                            <p class="arch-deploy-name">Render</p>
+                            <p class="arch-deploy-detail">Hosting web con gunicorn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="method-section" id="metodologia">
+            <h3>Metodologia</h3>
+            <div class="method-grid">
+                <div class="method-card">
+                    <div class="method-num">1</div>
+                    <h4>Recoleccion de datos</h4>
+                    <p>Se utilizo el dataset California Housing Prices de Kaggle, con 20,640 registros de viviendas del estado de California, recolectados en el censo de 1990.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">2</div>
+                    <h4>Preprocesamiento</h4>
+                    <p>Se seleccionaron 8 variables numericas: longitud, latitud, edad media, habitaciones, dormitorios, poblacion, hogares e ingreso medio. Se eliminaron registros con valores nulos.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">3</div>
+                    <h4>Entrenamiento</h4>
+                    <p>Se entreno un modelo de Regresion Lineal Multiple con scikit-learn. El conjunto de entrenamiento incluyo el 80% de los datos, validando con el 20% restante.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset-section" id="datos">
+            <h3>Dataset</h3>
+            <div class="dataset-table-wrap">
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Tipo</th>
+                            <th>Rango</th>
+                            <th>Descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>longitude</td><td>Numerica</td><td>-124.35 a -114.31</td><td>Ubicacion geografica longitudinal</td></tr>
+                        <tr><td>latitude</td><td>Numerica</td><td>32.54 a 41.95</td><td>Ubicacion geografica latitudinal</td></tr>
+                        <tr><td>housing_median_age</td><td>Numerica</td><td>1 a 52</td><td>Edad media de las viviendas en la zona</td></tr>
+                        <tr><td>total_rooms</td><td>Numerica</td><td>2 a 39,320</td><td>Total de habitaciones en el bloque</td></tr>
+                        <tr><td>total_bedrooms</td><td>Numerica</td><td>1 a 6,445</td><td>Total de dormitorios en el bloque</td></tr>
+                        <tr><td>population</td><td>Numerica</td><td>3 a 35,682</td><td>Poblacion del bloque</td></tr>
+                        <tr><td>households</td><td>Numerica</td><td>1 a 6,082</td><td>Numero de hogares en el bloque</td></tr>
+                        <tr><td>median_income</td><td>Numerica</td><td>0.5 a 15.0</td><td>Ingreso medio del bloque (x10k USD)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="dataset-note">Fuente: Kaggle - California Housing Prices (Censo 1990)</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+                    </svg>
+                </div>
+                <span>California Housing Institute</span>
+            </div>
+            <p class="footer-copy">2026 Real Estate Analytics Division. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const RANGES = {
+            longitude: {min:-124.35, max:-114.31, label:"Longitud"},
+            latitude: {min:32.54, max:41.95, label:"Latitud"},
+            housing_median_age: {min:1, max:52, label:"Edad Media"},
+            total_rooms: {min:2, max:39320, label:"Habitaciones"},
+            total_bedrooms: {min:1, max:6445, label:"Dormitorios"},
+            population: {min:3, max:35682, label:"Poblacion"},
+            households: {min:1, max:6082, label:"Hogares"},
+            median_income: {min:0.5, max:15.0, label:"Ingreso Medio"}
+        };
+
+        const form = document.getElementById("predictForm");
+        const resultDiv = document.getElementById("result");
+        const errorDiv = document.getElementById("error");
+        const predictedPrice = document.getElementById("predictedPrice");
+        const errorMsg = document.getElementById("errorMsg");
+        const btnPredict = document.getElementById("btnPredict");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            resultDiv.classList.add("hidden");
+            errorDiv.classList.add("hidden");
+
+            const features = ["longitude","latitude","housing_median_age","total_rooms","total_bedrooms","population","households","median_income"];
+            const data = {};
+            for (const f of features) {
+                const el = document.getElementById(f);
+                const val = parseFloat(el.value);
+                const r = RANGES[f];
+                if (isNaN(val) || val < r.min || val > r.max) {
+                    errorMsg.textContent = r.label + ": valor fuera de rango (" + r.min + " a " + r.max + ")";
+                    errorDiv.classList.remove("hidden");
+                    return;
+                }
+                data[f] = val;
+            }
+
+            btnPredict.disabled = true;
+            btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
+
+            try {
+                const response = await fetch("/api/predict/california-housing", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    predictedPrice.textContent = result.prediction.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+                    resultDiv.classList.remove("hidden");
+                } else {
+                    errorMsg.textContent = result.error || "Error al predecir.";
+                    errorDiv.classList.remove("hidden");
+                }
+            } catch (err) {
+                errorMsg.textContent = "Error de conexion con el servidor.";
+                errorDiv.classList.remove("hidden");
+            } finally {
+                btnPredict.disabled = false;
+                btnPredict.querySelector(".btn-inner").lastChild.textContent = "Ejecutar estimacion";
+            }
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+
+    <script>
+        const CHART_COLORS = {
+            navy: '#1B365D',
+            navyLight: '#2A4A7F',
+            gold: '#C49A2A',
+            goldLight: '#D4AA3A',
+            slate: '#4A5568',
+            slateLight: '#718096',
+            blue: '#3B82F6',
+            blueLight: '#60A5FA',
+            green: '#10B981',
+            red: '#EF4444',
+            bg: '#F4F6F8',
+            white: '#FFFFFF',
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#4A5568';
+
+        // ── CHART 1: COMPARATIVA DE MODELOS ──
+        new Chart(document.getElementById('chartComparison'), {
+            type: 'bar',
+            data: {
+                labels: ['R2 Score', 'MAE ($)', 'RMSE ($)'],
+                datasets: [
+                    {
+                        label: 'Lineal Multiple',
+                        data: [0.6136, 52331, 71155],
+                        backgroundColor: CHART_COLORS.navy,
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.6,
+                    },
+                    {
+                        label: 'Polinomial (Grado 2)',
+                        data: [0.6334, 46374, 69306],
+                        backgroundColor: CHART_COLORS.gold,
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.7,
+                        categoryPercentage: 0.6,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { weight: '600' } }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        titleFont: { weight: '700' },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) {
+                                if (ctx.dataIndex === 0) return ctx.dataset.label + ': ' + ctx.raw.toFixed(4);
+                                return ctx.dataset.label + ': $' + ctx.raw.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        ticks: {
+                            callback: function(v) {
+                                if (v === 0) return '0';
+                                if (v < 1) return v.toFixed(2);
+                                return '$' + (v/1000).toFixed(0) + 'k';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { weight: '600' } }
+                    }
+                }
+            }
+        });
+
+        // ── CHART 2: IMPORTANCIA DE VARIABLES ──
+        new Chart(document.getElementById('chartImportance'), {
+            type: 'bar',
+            data: {
+                labels: [
+                    'long * rooms',
+                    'long * lat',
+                    'long * income',
+                    'long * beds',
+                    'total_rooms',
+                    'long * hh',
+                    'median_income',
+                    'latitude',
+                    'households',
+                    'long^2'
+                ],
+                datasets: [{
+                    label: 'Coeficiente (|valor|)',
+                    data: [3420309, 2982134, 2395634, 2278312, 2219886, 2089921, 1596658, 1586657, 1556154, 1476537],
+                    backgroundColor: [
+                        CHART_COLORS.navy, CHART_COLORS.navyLight, CHART_COLORS.gold,
+                        CHART_COLORS.goldLight, CHART_COLORS.blue, CHART_COLORS.slate,
+                        CHART_COLORS.green, CHART_COLORS.blueLight, CHART_COLORS.slateLight, CHART_COLORS.navy
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) { return 'Coef: ' + ctx.raw.toLocaleString(); }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        ticks: { callback: function(v) { return (v/1000000).toFixed(1) + 'M'; } }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10, family: "'IBM Plex Mono', monospace" } }
+                    }
+                }
+            }
+        });
+
+        // ── CHART 3: HEATMAP DE CORRELACION ──
+        (function() {
+            var labels = ['long', 'lat', 'age', 'rooms', 'beds', 'pop', 'hh', 'income'];
+            var corrData = [
+                [ 1.000, -0.925, -0.108, 0.030, 0.062, 0.116, 0.055, -0.015],
+                [-0.925,  1.000,  0.011,-0.028,-0.066,-0.133,-0.079, -0.085],
+                [-0.108,  0.011,  1.000,-0.382,-0.327,-0.308,-0.307, -0.142],
+                [ 0.030, -0.028, -0.382, 1.000, 0.912, 0.828, 0.909,  0.252],
+                [ 0.062, -0.066, -0.327, 0.912, 1.000, 0.868, 0.972, -0.013],
+                [ 0.116, -0.133, -0.308, 0.828, 0.868, 1.000, 0.904,  0.001],
+                [ 0.055, -0.079, -0.307, 0.909, 0.972, 0.904, 1.000,  0.018],
+                [-0.015, -0.085, -0.142, 0.252,-0.013, 0.001, 0.018,  1.000]
+            ];
+
+            function getColor(val) {
+                var abs = Math.abs(val);
+                if (val > 0) {
+                    if (abs > 0.7) return { bg: '#1B365D', text: '#FFFFFF' };
+                    if (abs > 0.3) return { bg: '#3B6FA0', text: '#FFFFFF' };
+                    if (abs > 0.1) return { bg: '#7BA3C7', text: '#1B365D' };
+                    return { bg: '#D6E4F0', text: '#4A5568' };
+                } else {
+                    if (abs > 0.7) return { bg: '#C49A2A', text: '#FFFFFF' };
+                    if (abs > 0.3) return { bg: '#D4AA3A', text: '#FFFFFF' };
+                    if (abs > 0.1) return { bg: '#E8C96A', text: '#1B365D' };
+                    return { bg: '#F5ECD0', text: '#4A5568' };
+                }
+            }
+
+            var container = document.getElementById('heatmapContainer');
+            var html = '<div class="heatmap-grid">';
+            html += '<div class="heatmap-corner"></div>';
+            labels.forEach(function(l) { html += '<div class="heatmap-header">' + l + '</div>'; });
+            for (var i = 0; i < 8; i++) {
+                html += '<div class="heatmap-header">' + labels[i] + '</div>';
+                for (var j = 0; j < 8; j++) {
+                    var v = corrData[i][j];
+                    var c = getColor(v);
+                    var display = v === 1.0 ? '1.00' : v.toFixed(2);
+                    html += '<div class="heatmap-cell" style="background:' + c.bg + ';color:' + c.text + '" title="' + labels[i] + ' vs ' + labels[j] + ': ' + v.toFixed(3) + '">' + display + '</div>';
+                }
+            }
+            html += '</div>';
+            html += '<div class="heatmap-legend"><span class="heatmap-legend-label">-1.0</span><div class="heatmap-legend-bar"></div><span class="heatmap-legend-label">+1.0</span></div>';
+            container.innerHTML = html;
+        })();
+
+        // ── CHART 4: SCATTER REALES vs PREDICHOS ──
+        (function() {
+            var real = [47700,35900,35200,24100,20200,33700,29400,21900,42800,40600,22300,37800,13100,24800,19700,38200,45600,26100,23500,29100,51600,23300,23800,32900,27500,24100,29600,31500,21700,24000,22900,28100,29400,22500,42200,23700,41000,26200,21300,32700,19400,32500,22900,26200,35400,24800,15200,26800,23500,32700,37200,45200,22200,27900,24800,28900,24500,27700,26700,35200];
+            var pred = [52000,38500,37200,28100,24500,35600,31200,25800,44100,39200,25900,36500,18200,27600,23100,39800,43200,28900,26200,31500,48900,26700,27100,34200,29800,26900,31200,33100,24800,26500,25400,30200,31600,25100,40500,26300,38900,28700,24100,34500,22100,34200,25700,28300,37100,27200,19500,29400,26100,34800,38900,43100,24900,30200,27100,31400,27300,30100,28900,36800];
+            var colors = real.map(function(r, i) {
+                var err = Math.abs(r - pred[i]);
+                if (err < 5000) return CHART_COLORS.green;
+                if (err < 15000) return CHART_COLORS.gold;
+                return CHART_COLORS.red;
+            });
+            new Chart(document.getElementById('chartScatter'), {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Predicciones',
+                        data: real.map(function(r, i) { return { x: r, y: pred[i] }; }),
+                        backgroundColor: colors,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                    }, {
+                        label: 'Linea perfecta',
+                        data: [{x: 10000, y: 10000}, {x: 55000, y: 55000}],
+                        type: 'line',
+                        borderColor: CHART_COLORS.slate,
+                        borderDash: [6, 4],
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { usePointStyle: true, padding: 12, font: { weight: '600' } }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1B365D',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(ctx) {
+                                    if (ctx.datasetIndex === 1) return '';
+                                    return 'Real: $' + ctx.raw.x.toLocaleString() + ' | Pred: $' + ctx.raw.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Valor Real ($)', font: { weight: '700' } },
+                            grid: { color: '#E8ECF0' },
+                            ticks: { callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } }
+                        },
+                        y: {
+                            title: { display: true, text: 'Valor Predicho ($)', font: { weight: '700' } },
+                            grid: { color: '#E8ECF0' },
+                            ticks: { callback: function(v) { return '$' + (v/1000).toFixed(0) + 'k'; } }
+                        }
+                    }
+                }
+            });
+        })();
+
+        // ── CHART 5: DISTRIBUCION DEL PRECIO ──
+        new Chart(document.getElementById('chartDistribution'), {
+            type: 'bar',
+            data: {
+                labels: ['15k-50k','50k-100k','100k-150k','150k-200k','200k-250k','250k-300k','300k-350k','350k-400k','400k-450k','450k-500k'],
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: [850, 2600, 4100, 3800, 3200, 2100, 1500, 900, 600, 990],
+                    backgroundColor: function(ctx) {
+                        var i = ctx.dataIndex;
+                        var clrs = ['#D6E4F0','#A8C4DE','#7BA3C7','#4E82B0','#3B6FA0','#2A5A8A','#1B365D','#152D4D','#102440','#0A1B33'];
+                        return clrs[i];
+                    },
+                    borderWidth: 0,
+                    borderRadius: 3,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1B365D',
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(ctx) { return ctx.raw.toLocaleString() + ' viviendas'; }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#E8ECF0' },
+                        title: { display: true, text: 'Frecuencia', font: { weight: '700' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 9 } },
+                        title: { display: true, text: 'Rango de Precio ($)', font: { weight: '700' } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
