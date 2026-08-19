@@ -25,6 +25,8 @@ def load_models():
         if os.path.exists(scaler_path):
             SCALERS[name] = joblib.load(scaler_path)
 
+load_models()
+
 FEATURES = {
     "california-housing": {
         "name": "California Housing",
@@ -121,6 +123,5 @@ def predict(project):
 
 
 if __name__ == "__main__":
-    load_models()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
