@@ -48,6 +48,63 @@ df_raw = load_data()
 df = df_raw.dropna().copy()
 FEATURES = ["age", "sex", "bmi", "bp", "s1", "s2", "s3", "s4", "s5", "s6"]
 
+# ── Mapeo de valores reales al espacio escalado ──────────────────────────────
+# Rangos clínicos reales (valores que ve el usuario)
+REAL_RANGES = {
+    "age": {"min": 20,   "max": 80,   "default": 50,   "step": 1,    "unit": "años",      "label": "Edad"},
+    "sex": {"min": 0,    "max": 1,    "default": 0,     "step": 1,    "unit": "",           "label": "Sexo"},
+    "bmi": {"min": 15.0, "max": 50.0, "default": 25.0,  "step": 0.1,  "unit": "kg/m²",     "label": "IMC"},
+    "bp":  {"min": 60,   "max": 200,  "default": 100,   "step": 1,    "unit": "mmHg",      "label": "Presión Arterial"},
+    "s1":  {"min": 100,  "max": 400,  "default": 200,   "step": 1,    "unit": "mg/dL",     "label": "Colesterol Total"},
+    "s2":  {"min": 50,   "max": 300,  "default": 130,   "step": 1,    "unit": "mg/dL",     "label": "LDL (Colesterol malo)"},
+    "s3":  {"min": 20,   "max": 100,  "default": 50,    "step": 1,    "unit": "mg/dL",     "label": "HDL (Colesterol bueno)"},
+    "s4":  {"min": 1.0,  "max": 10.0, "default": 4.0,   "step": 0.1,  "unit": "",           "label": "Relación Colesterol/HDL"},
+    "s5":  {"min": 3.0,  "max": 7.0,  "default": 4.5,   "step": 0.05, "unit": "log(mg/dL)","label": "Triglicéridos (log)"},
+    "s6":  {"min": 50,   "max": 300,  "default": 100,   "step": 1,    "unit": "mg/dL",     "label": "Glucosa en Sangre"},
+}
+
+# Rangos reales del dataset escalado (calculados del dataset)
+SCALED_RANGES = {
+    "age": {"min": -0.1072, "max": 0.1107},
+    "sex": {"min": -0.0446, "max": 0.0507},
+    "bmi": {"min": -0.0903, "max": 0.1706},
+    "bp":  {"min": -0.1124, "max": 0.1320},
+    "s1":  {"min": -0.1268, "max": 0.1539},
+    "s2":  {"min": -0.1156, "max": 0.1988},
+    "s3":  {"min": -0.1023, "max": 0.1812},
+    "s4":  {"min": -0.0764, "max": 0.1852},
+    "s5":  {"min": -0.1261, "max": 0.1336},
+    "s6":  {"min": -0.1378, "max": 0.1356},
+}
+
+def real_to_scaled(feature, real_value):
+    """Convierte un valor real clínico al espacio escalado del modelo."""
+    r = REAL_RANGES[feature]
+    s = SCALED_RANGES[feature]
+    # Mapeo lineal del rango real al rango escalado
+    proportion = (real_value - r["min"]) / (r["max"] - r["min"])
+    return s["min"] + proportion * (s["max"] - s["min"])
+
+# Descripciones de variables
+VAR_DESCRIPTIONS = {
+    "age": "Edad del paciente en años (rango: 20-80)",
+    "sex": "Sexo del paciente (Masculino / Femenino)",
+    "bmi": "Índice de Masa Corporal: peso(kg) / altura(m)² (rango: 15-50)",
+    "bp": "Presión arterial diastólica promedio en mmHg (rango: 60-200)",
+    "s1": "Colesterol sérico total en mg/dL (rango: 100-400)",
+    "s2": "Lipoproteínas de baja densidad (LDL) en mg/dL (rango: 50-300)",
+    "s3": "Lipoproteínas de alta densidad (HDL) en mg/dL (rango: 20-100)",
+    "s4": "Relación colesterol total / HDL (rango: 1-10)",
+    "s5": "Logaritmo de triglicéridos séricos (rango: 3-7)",
+    "s6": "Nivel de glucosa en sangre en mg/dL (rango: 50-300)",
+}
+
+FEATURE_NAMES = {
+    "age": "Edad", "sex": "Sexo", "bmi": "IMC", "bp": "Presión Arterial",
+    "s1": "Colesterol Total", "s2": "LDL", "s3": "HDL",
+    "s4": "Colesterol/HDL", "s5": "Triglicéridos", "s6": "Glucosa",
+}
+
 @st.cache_data
 def build_models():
     X = df[FEATURES].copy()
@@ -120,26 +177,6 @@ tab_prediccion, tab_datos, tab_lineal, tab_polinomial = st.tabs([
     "🔮 Predicción", "📊 Dataset", "📈 Modelo Lineal", "🌀 Modelo Polinomial"
 ])
 
-# Mapeo de sexo: valores reales del dataset para masculino y femenino
-SEX_VALUES = {
-    "Masculino": df_raw[df_raw["sex"] == df_raw["sex"].unique()[0]]["sex"].iloc[0],
-    "Femenino": df_raw[df_raw["sex"] == df_raw["sex"].unique()[-1]]["sex"].iloc[0],
-}
-
-# Descripciones de variables
-VAR_DESCRIPTIONS = {
-    "age": "Edad del paciente (años, escalado)",
-    "sex": "Sexo del paciente (Masculino / Femenino)",
-    "bmi": "Índice de Masa Corporal (peso/altura²)",
-    "bp": "Presión arterial promedio (mmHg)",
-    "s1": "Colesterol sérico total (mg/dL)",
-    "s2": "Lipoproteínas de baja densidad - LDL (mg/dL)",
-    "s3": "Lipoproteínas de alta densidad - HDL (mg/dL)",
-    "s4": "Relación colesterol total / HDL",
-    "s5": "Logaritmo de triglicéridos séricos",
-    "s6": "Nivel de glucosa en sangre (mg/dL)",
-}
-
 # ────────────────────────── PREDICCIÓN ──────────────────────────────────────
 with tab_prediccion:
     st.subheader("Predicción de progresión de diabetes (1 año)")
@@ -149,69 +186,104 @@ with tab_prediccion:
         st.header("🩺 Variables Basales del Paciente")
 
         st.markdown("**Demográficas**")
-        age = st.slider(
-            "Edad",
-            -0.2, 0.2, 0.0, step=0.01,
+        age_real = st.slider(
+            "Edad (años)",
+            min_value=REAL_RANGES["age"]["min"],
+            max_value=REAL_RANGES["age"]["max"],
+            value=REAL_RANGES["age"]["default"],
+            step=REAL_RANGES["age"]["step"],
             help=VAR_DESCRIPTIONS["age"]
         )
         sex_option = st.selectbox(
             "Sexo",
-            options=list(SEX_VALUES.keys()),
+            options=["Masculino", "Femenino"],
             help=VAR_DESCRIPTIONS["sex"]
         )
-        sex = SEX_VALUES[sex_option]
 
         st.markdown("**Antropométricas**")
-        bmi = st.slider(
-            "IMC (Índice de Masa Corporal)",
-            -0.2, 0.2, 0.0, step=0.01,
+        bmi_real = st.slider(
+            "IMC (kg/m²)",
+            min_value=REAL_RANGES["bmi"]["min"],
+            max_value=REAL_RANGES["bmi"]["max"],
+            value=REAL_RANGES["bmi"]["default"],
+            step=REAL_RANGES["bmi"]["step"],
             help=VAR_DESCRIPTIONS["bmi"]
         )
-        bp = st.slider(
-            "Presión Arterial Promedio",
-            -0.2, 0.2, 0.0, step=0.01,
+        bp_real = st.slider(
+            "Presión Arterial (mmHg)",
+            min_value=REAL_RANGES["bp"]["min"],
+            max_value=REAL_RANGES["bp"]["max"],
+            value=REAL_RANGES["bp"]["default"],
+            step=REAL_RANGES["bp"]["step"],
             help=VAR_DESCRIPTIONS["bp"]
         )
 
         st.markdown("**Bioquímicas (Sangre)**")
-        s1 = st.slider(
-            "Colesterol Total",
-            -0.2, 0.2, 0.0, step=0.01,
+        s1_real = st.slider(
+            "Colesterol Total (mg/dL)",
+            min_value=REAL_RANGES["s1"]["min"],
+            max_value=REAL_RANGES["s1"]["max"],
+            value=REAL_RANGES["s1"]["default"],
+            step=REAL_RANGES["s1"]["step"],
             help=VAR_DESCRIPTIONS["s1"]
         )
-        s2 = st.slider(
-            "LDL (Colesterol malo)",
-            -0.2, 0.2, 0.0, step=0.01,
+        s2_real = st.slider(
+            "LDL - Colesterol malo (mg/dL)",
+            min_value=REAL_RANGES["s2"]["min"],
+            max_value=REAL_RANGES["s2"]["max"],
+            value=REAL_RANGES["s2"]["default"],
+            step=REAL_RANGES["s2"]["step"],
             help=VAR_DESCRIPTIONS["s2"]
         )
-        s3 = st.slider(
-            "HDL (Colesterol bueno)",
-            -0.2, 0.2, 0.0, step=0.01,
+        s3_real = st.slider(
+            "HDL - Colesterol bueno (mg/dL)",
+            min_value=REAL_RANGES["s3"]["min"],
+            max_value=REAL_RANGES["s3"]["max"],
+            value=REAL_RANGES["s3"]["default"],
+            step=REAL_RANGES["s3"]["step"],
             help=VAR_DESCRIPTIONS["s3"]
         )
-        s4 = st.slider(
+        s4_real = st.slider(
             "Relación Colesterol / HDL",
-            -0.2, 0.2, 0.0, step=0.01,
+            min_value=REAL_RANGES["s4"]["min"],
+            max_value=REAL_RANGES["s4"]["max"],
+            value=REAL_RANGES["s4"]["default"],
+            step=REAL_RANGES["s4"]["step"],
             help=VAR_DESCRIPTIONS["s4"]
         )
-        s5 = st.slider(
-            "Triglicéridos (log)",
-            -0.2, 0.2, 0.0, step=0.01,
+        s5_real = st.slider(
+            "Triglicéridos (log mg/dL)",
+            min_value=REAL_RANGES["s5"]["min"],
+            max_value=REAL_RANGES["s5"]["max"],
+            value=REAL_RANGES["s5"]["default"],
+            step=REAL_RANGES["s5"]["step"],
             help=VAR_DESCRIPTIONS["s5"]
         )
-        s6 = st.slider(
-            "Glucosa en Sangre",
-            -0.2, 0.2, 0.0, step=0.01,
+        s6_real = st.slider(
+            "Glucosa en Sangre (mg/dL)",
+            min_value=REAL_RANGES["s6"]["min"],
+            max_value=REAL_RANGES["s6"]["max"],
+            value=REAL_RANGES["s6"]["default"],
+            step=REAL_RANGES["s6"]["step"],
             help=VAR_DESCRIPTIONS["s6"]
         )
 
-        st.info("Los valores están escalados (mean-centered y std-scaled). Rango típico: -0.2 a 0.2")
         predict_btn = st.button("🔍 Predecir", type="primary", use_container_width=True)
 
     if predict_btn:
+        # Convertir valores reales a espacio escalado
+        sex_real = 0.04 if sex_option == "Masculino" else -0.04
         input_data = pd.DataFrame([{
-            "age": age, "sex": sex, "bmi": bmi, "bp": bp,
-            "s1": s1, "s2": s2, "s3": s3, "s4": s4, "s5": s5, "s6": s6,
+            "age": real_to_scaled("age", age_real),
+            "sex": sex_real,
+            "bmi": real_to_scaled("bmi", bmi_real),
+            "bp":  real_to_scaled("bp", bp_real),
+            "s1":  real_to_scaled("s1", s1_real),
+            "s2":  real_to_scaled("s2", s2_real),
+            "s3":  real_to_scaled("s3", s3_real),
+            "s4":  real_to_scaled("s4", s4_real),
+            "s5":  real_to_scaled("s5", s5_real),
+            "s6":  real_to_scaled("s6", s6_real),
         }])
 
         input_scaled = models["linear"]["scaler"].transform(input_data)
@@ -259,9 +331,11 @@ with tab_prediccion:
         with st.expander("Ver resumen de las variables ingresadas", expanded=False):
             input_display = pd.DataFrame({
                 "Variable": ["Edad", "Sexo", "IMC", "Presión Arterial",
-                             "Colesterol Total", "LDL (Colesterol malo)", "HDL (Colesterol bueno)",
-                             "Relación Colesterol/HDL", "Triglicéridos (log)", "Glucosa en Sangre"],
-                "Valor": [age, sex_option, bmi, bp, s1, s2, s3, s4, s5, s6],
+                             "Colesterol Total", "LDL", "HDL",
+                             "Relación Colesterol/HDL", "Triglicéridos", "Glucosa"],
+                "Valor": [f"{age_real} años", sex_option, f"{bmi_real} kg/m²", f"{bp_real} mmHg",
+                          f"{s1_real} mg/dL", f"{s2_real} mg/dL", f"{s3_real} mg/dL",
+                          f"{s4_real}", f"{s5_real}", f"{s6_real} mg/dL"],
             })
             st.dataframe(input_display, use_container_width=True, hide_index=True)
 
@@ -288,13 +362,6 @@ with tab_datos:
 
     st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
     st.subheader("Distribuciones de Variables")
-
-    # Nombres legibles para los gráficos
-    FEATURE_NAMES = {
-        "age": "Edad", "sex": "Sexo", "bmi": "IMC", "bp": "Presión Arterial",
-        "s1": "Colesterol Total", "s2": "LDL", "s3": "HDL",
-        "s4": "Colesterol/HDL", "s5": "Triglicéridos", "s6": "Glucosa",
-    }
 
     fig, axes = plt.subplots(2, 5, figsize=(20, 8))
     for i, feat in enumerate(FEATURES):
