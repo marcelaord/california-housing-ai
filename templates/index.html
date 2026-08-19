@@ -30,9 +30,9 @@
             </div>
             <div class="nav-right">
                 <div class="nav-links">
-                    <a href="#" class="nav-link active">Consultor</a>
-                    <a href="#" class="nav-link">Metodologia</a>
-                    <a href="#" class="nav-link">Datos</a>
+                    <a href="#consultor" class="nav-link active">Consultor</a>
+                    <a href="#metodologia" class="nav-link">Metodologia</a>
+                    <a href="#datos" class="nav-link">Datos</a>
                 </div>
                 <div class="nav-status">
                     <span class="status-dot"></span>
@@ -43,7 +43,7 @@
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" id="consultor">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -199,6 +199,54 @@
                 <span class="info-label">Variable objetivo</span>
             </div>
         </div>
+
+        <section class="method-section" id="metodologia">
+            <h3>Metodologia</h3>
+            <div class="method-grid">
+                <div class="method-card">
+                    <div class="method-num">1</div>
+                    <h4>Recoleccion de datos</h4>
+                    <p>Se utilizo el dataset California Housing Prices de Kaggle, con 20,640 registros de viviendas del estado de California, recolectados en el censo de 1990.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">2</div>
+                    <h4>Preprocesamiento</h4>
+                    <p>Se seleccionaron 8 variables numericas: longitud, latitud, edad media, habitaciones, dormitorios, poblacion, hogares e ingreso medio. Se eliminaron registros con valores nulos.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">3</div>
+                    <h4>Entrenamiento</h4>
+                    <p>Se entreno un modelo de Regresion Lineal Multiple con scikit-learn. El conjunto de entrenamiento incluyo el 80% de los datos, validando con el 20% restante.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset-section" id="datos">
+            <h3>Dataset</h3>
+            <div class="dataset-table-wrap">
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Tipo</th>
+                            <th>Ejemplo</th>
+                            <th>Descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>longitude</td><td>Numerica</td><td>-119.5</td><td>Ubicacion geografica longitudinal</td></tr>
+                        <tr><td>latitude</td><td>Numerica</td><td>35.6</td><td>Ubicacion geografica latitudinal</td></tr>
+                        <tr><td>housing_median_age</td><td>Numerica</td><td>28</td><td>Edad media de las viviendas en la zona</td></tr>
+                        <tr><td>total_rooms</td><td>Numerica</td><td>1,500</td><td>Total de habitaciones en el bloque</td></tr>
+                        <tr><td>total_bedrooms</td><td>Numerica</td><td>300</td><td>Total de dormitorios en el bloque</td></tr>
+                        <tr><td>population</td><td>Numerica</td><td>1,200</td><td>Poblacion del bloque</td></tr>
+                        <tr><td>households</td><td>Numerica</td><td>400</td><td>Numero de hogares en el bloque</td></tr>
+                        <tr><td>median_income</td><td>Numerica</td><td>4.5</td><td>Ingreso medio del bloque (x10k USD)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="dataset-note">Fuente: Kaggle - California Housing Prices (Censo 1990)</p>
+        </section>
     </main>
 
     <footer class="footer">
@@ -255,6 +303,19 @@
                 btnPredict.disabled = false;
                 btnPredict.querySelector(".btn-inner").lastChild.textContent = "Ejecutar estimacion";
             }
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
         });
     </script>
 </body>
