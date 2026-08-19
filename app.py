@@ -8,13 +8,16 @@ app = Flask(__name__)
 BASE_DIR = os.path.dirname(__file__)
 
 MODELS = {}
-DATASETS = {}
+SCALERS = {}
 
 def load_models():
     for name in ["california-housing", "wine-quality", "diabetes"]:
         model_path = os.path.join(BASE_DIR, name, "model.pkl")
+        scaler_path = os.path.join(BASE_DIR, name, "scaler.pkl")
         if os.path.exists(model_path):
             MODELS[name] = joblib.load(model_path)
+        if os.path.exists(scaler_path):
+            SCALERS[name] = joblib.load(scaler_path)
 
 FEATURES = {
     "california-housing": {
@@ -98,6 +101,8 @@ def predict(project):
             values.append(val)
 
         X = np.array([values])
+        if project in SCALERS:
+            X = SCALERS[project].transform(X)
         prediction = MODELS[project].predict(X)[0]
         if prediction < 0:
             prediction = 0
