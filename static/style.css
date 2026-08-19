@@ -115,6 +115,43 @@ button[type="submit"]:hover .btn-shine{left:130%}
 .info-label{font-size:0.62rem;font-weight:500;color:var(--text-4);text-transform:uppercase;letter-spacing:0.8px;display:block;margin-top:4px}
 .info-sep{width:1px;height:32px;background:var(--gray-200);flex-shrink:0}
 
+/* ═══ ARCHITECTURE SECTION ═══ */
+.arch-section{margin-top:48px}
+.arch-section h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.3px}
+.arch-desc{font-size:0.82rem;color:var(--text-3);margin-bottom:28px}
+.arch-flow{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:32px;padding:20px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid rgba(27,54,93,0.04)}
+.arch-flow-item{display:flex;flex-direction:column;align-items:center;gap:6px}
+.arch-flow-icon{width:44px;height:44px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;letter-spacing:0.5px}
+.arch-flow-icon.frontend{background:rgba(74,143,231,0.1);color:#4a8fe7;border:1.5px solid rgba(74,143,231,0.15)}
+.arch-flow-icon.backend{background:var(--gold-dim);color:var(--gold);border:1.5px solid rgba(201,150,59,0.15)}
+.arch-flow-icon.model{background:rgba(22,163,74,0.08);color:var(--green);border:1.5px solid rgba(22,163,74,0.12)}
+.arch-flow-icon.data{background:rgba(220,38,38,0.06);color:var(--red);border:1.5px solid rgba(220,38,38,0.1)}
+.arch-flow-item>span{font-size:0.68rem;font-weight:600;color:var(--text-2)}
+.arch-flow-arrow{color:var(--gray-300);margin:0 4px;margin-bottom:18px}
+.arch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.arch-card{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1px solid rgba(27,54,93,0.04);transition:all 0.25s}
+.arch-card:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.arch-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.arch-badge{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding:4px 10px;border-radius:20px}
+.arch-badge.frontend{background:rgba(74,143,231,0.1);color:#4a8fe7}
+.arch-badge.backend{background:var(--gold-dim);color:var(--gold)}
+.arch-badge.model{background:rgba(22,163,74,0.08);color:var(--green)}
+.arch-badge.data{background:rgba(220,38,38,0.06);color:var(--red)}
+.arch-tech{font-size:0.68rem;font-weight:600;color:var(--text-4);font-family:'IBM Plex Mono',monospace}
+.arch-card-desc{font-size:0.8rem;color:var(--text-3);line-height:1.6;margin-bottom:16px}
+.arch-files{display:flex;flex-direction:column;gap:6px}
+.arch-file{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--gray-50);border-radius:var(--radius-xs);font-size:0.76rem;color:var(--text-2);font-family:'IBM Plex Mono',monospace}
+.arch-file-icon{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.55rem;font-weight:800;flex-shrink:0;background:var(--gray-200);color:var(--text-3)}
+.arch-file-role{margin-left:auto;font-family:'Inter',sans-serif;font-size:0.66rem;color:var(--text-4);font-weight:500;white-space:nowrap}
+.arch-deploy{margin-top:20px;background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-xs);border:1px solid rgba(27,54,93,0.04)}
+.arch-deploy h4{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px}
+.arch-deploy-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.arch-deploy-item{display:flex;align-items:center;gap:12px;padding:14px;background:var(--gray-50);border-radius:var(--radius-xs);border:1px solid var(--gray-100)}
+.arch-deploy-icon{width:38px;height:38px;border-radius:var(--radius-xs);background:var(--white);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;color:var(--text-3);flex-shrink:0}
+.arch-deploy-icon.render{color:#e05929;border-color:rgba(224,89,41,0.15);background:rgba(224,89,41,0.04)}
+.arch-deploy-name{font-size:0.82rem;font-weight:700;color:var(--text)}
+.arch-deploy-detail{font-size:0.68rem;color:var(--text-4);margin-top:1px}
+
 /* ═══ METHODOLOGY SECTION ═══ */
 .method-section{margin-top:48px}
 .method-section h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:20px;letter-spacing:-0.3px}
@@ -152,6 +189,9 @@ button[type="submit"]:hover .btn-shine{left:130%}
     .predictor-card{max-width:600px}
     .metrics-band{grid-template-columns:1fr}
     .method-grid{grid-template-columns:1fr}
+    .arch-grid{grid-template-columns:1fr}
+    .arch-flow{flex-wrap:wrap;gap:8px}
+    .arch-flow-arrow{display:none}
     .info-band{flex-wrap:wrap;gap:12px}
     .info-sep{display:none}
     .info-item{min-width:120px}
