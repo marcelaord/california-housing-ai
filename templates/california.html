@@ -84,11 +84,12 @@
             </div>
 
             <form id="predictForm" autocomplete="off">
+                <p class="form-note">Los valores corresponden a un bloque censal promedio del estado de California.</p>
                 <div class="form-grid">
                     <div class="field">
                         <label for="longitude">Longitud</label>
                         <div class="input-wrap">
-                            <input type="number" id="longitude" step="any" value="-119.5" min="-124.35" max="-114.31" required>
+                            <input type="number" id="longitude" step="any" value="-118.5" min="-124.35" max="-114.31" required>
                             <span class="input-tag">°W</span>
                         </div>
                         <span class="field-range">Rango: -124.35 a -114.31</span>
@@ -96,7 +97,7 @@
                     <div class="field">
                         <label for="latitude">Latitud</label>
                         <div class="input-wrap">
-                            <input type="number" id="latitude" step="any" value="35.6" min="32.54" max="41.95" required>
+                            <input type="number" id="latitude" step="any" value="34.05" min="32.54" max="41.95" required>
                             <span class="input-tag">°N</span>
                         </div>
                         <span class="field-range">Rango: 32.54 a 41.95</span>
@@ -104,39 +105,52 @@
                     <div class="field">
                         <label for="housing_median_age">Edad Media</label>
                         <div class="input-wrap">
-                            <input type="number" id="housing_median_age" step="any" value="28" min="1" max="52" required>
+                            <input type="number" id="housing_median_age" step="any" value="30" min="1" max="52" required>
                             <span class="input-tag">años</span>
                         </div>
-                        <span class="field-range">Rango: 1 a 52</span>
+                        <span class="field-range">Promedio: ~29 años</span>
                     </div>
                     <div class="field">
-                        <label for="total_rooms">Habitaciones</label>
+                        <label for="total_rooms">Habitaciones (bloque)</label>
                         <div class="input-wrap">
-                            <input type="number" id="total_rooms" step="1" value="1500" min="2" max="39320" required>
+                            <input type="number" id="total_rooms" step="1" value="2100" min="2" max="39320" required>
                             <span class="input-tag">uds</span>
                         </div>
-                        <span class="field-range">Rango: 2 a 39,320</span>
+                        <span class="field-range">Promedio: ~2,127</span>
                     </div>
                     <div class="field">
-                        <label for="total_bedrooms">Dormitorios</label>
+                        <label for="total_bedrooms">Dormitorios (bloque)</label>
                         <div class="input-wrap">
-                            <input type="number" id="total_bedrooms" step="1" value="300" min="1" max="6445" required>
+                            <input type="number" id="total_bedrooms" step="1" value="435" min="1" max="6445" required>
                             <span class="input-tag">uds</span>
                         </div>
-                        <span class="field-range">Rango: 1 a 6,445</span>
+                        <span class="field-range">Promedio: ~435</span>
+                    </div>
+                    <div class="field">
+                        <label for="population">Poblacion (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="population" step="1" value="1160" min="3" max="35682" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Promedio: ~1,166</span>
+                    </div>
+                    <div class="field">
+                        <label for="households">Hogares (bloque)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="households" step="1" value="400" min="1" max="6082" required>
+                            <span class="input-tag">uds</span>
+                        </div>
+                        <span class="field-range">Promedio: ~409</span>
                     </div>
                     <div class="field">
                         <label for="median_income">Ingreso Medio</label>
                         <div class="input-wrap">
-                            <input type="number" id="median_income" step="any" value="4.5" min="0.5" max="15.0" required>
+                            <input type="number" id="median_income" step="any" value="3.8" min="0.5" max="15.0" required>
                             <span class="input-tag">x10k</span>
                         </div>
-                        <span class="field-range">Rango: 0.5 a 15.0</span>
+                        <span class="field-range">Promedio: ~$38,000</span>
                     </div>
                 </div>
-
-                <input type="hidden" id="population" value="1200">
-                <input type="hidden" id="households" value="400">
 
                 <button type="submit" id="btnPredict">
                     <span class="btn-shine"></span>
@@ -454,9 +468,9 @@
             housing_median_age: {min:1, max:52, label:"Edad Media"},
             total_rooms: {min:2, max:39320, label:"Habitaciones"},
             total_bedrooms: {min:1, max:6445, label:"Dormitorios"},
-            median_income: {min:0.5, max:15.0, label:"Ingreso Medio"},
             population: {min:3, max:35682, label:"Poblacion"},
-            households: {min:1, max:6082, label:"Hogares"}
+            households: {min:1, max:6082, label:"Hogares"},
+            median_income: {min:0.5, max:15.0, label:"Ingreso Medio"}
         };
 
         const form = document.getElementById("predictForm");

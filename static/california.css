@@ -1,5 +1,17 @@
 /* California Housing - estilos especificos */
 
+/* ── FORM NOTE ── */
+.form-note {
+    font-size: 0.82rem;
+    color: #718096;
+    background: #F4F6F8;
+    border-left: 3px solid #C49A2A;
+    padding: 10px 14px;
+    margin: 0 0 18px;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.4;
+}
+
 /* ── CHARTS SECTION ── */
 .charts-section {
     padding: 60px 0 20px;
