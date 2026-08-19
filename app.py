@@ -112,10 +112,8 @@ def predict(project):
         if MODEL_TYPES.get(project) == "linear" and project in SCALERS:
             X = SCALERS[project].transform(X)
         prediction = MODELS[project].predict(X)[0]
-        if prediction < 0:
-            prediction = 0
 
-        return jsonify({"prediction": round(prediction, 2)})
+        return jsonify({"prediction": round(prediction, 2), "debug_model": MODEL_TYPES.get(project, "unknown"), "debug_raw": round(float(prediction), 2), "debug_loaded": list(MODELS.keys())})
     except ValueError:
         return jsonify({"error": "Los valores deben ser numericos."}), 400
     except Exception as e:
