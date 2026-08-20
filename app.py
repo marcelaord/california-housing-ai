@@ -16,14 +16,17 @@ def load_models():
         model_path = os.path.join(BASE_DIR, name, "model.pkl")
         poly_path = os.path.join(BASE_DIR, name, "model_poly.pkl")
         scaler_path = os.path.join(BASE_DIR, name, "scaler.pkl")
-        if os.path.exists(poly_path):
-            MODELS[name] = joblib.load(poly_path)
-            MODEL_TYPES[name] = "poly"
-        elif os.path.exists(model_path):
-            MODELS[name] = joblib.load(model_path)
-            MODEL_TYPES[name] = "linear"
-        if os.path.exists(scaler_path):
-            SCALERS[name] = joblib.load(scaler_path)
+        try:
+            if os.path.exists(poly_path):
+                MODELS[name] = joblib.load(poly_path)
+                MODEL_TYPES[name] = "poly"
+            elif os.path.exists(model_path):
+                MODELS[name] = joblib.load(model_path)
+                MODEL_TYPES[name] = "linear"
+            if os.path.exists(scaler_path):
+                SCALERS[name] = joblib.load(scaler_path)
+        except Exception as e:
+            print(f"Error cargando modelo '{name}': {e}")
 
 load_models()
 
