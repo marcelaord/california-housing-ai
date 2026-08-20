@@ -2,7 +2,10 @@
 
 /* ── HERO ── */
 .wine-hero .hero-bg {
-    background: linear-gradient(135deg, #722F37 0%, #4A1A20 50%, #2D0E14 100%) !important;
+    background: url('https://images.unsplash.com/photo-1506377585622-bedcbb027afc?w=1920&q=80') center/cover no-repeat !important;
+}
+.wine-hero .hero-overlay {
+    background: linear-gradient(165deg,rgba(114,47,55,0.92) 0%,rgba(74,26,32,0.88) 50%,rgba(45,14,20,0.85) 100%) !important;
 }
 .wine-hero .predictor-card {
     border-top: 3px solid #722F37;

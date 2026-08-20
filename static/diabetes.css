@@ -2,7 +2,10 @@
 
 /* ── HERO ── */
 .diabetes-hero .hero-bg {
-    background: linear-gradient(135deg, #0D9488 0%, #04786A 50%, #035C52 100%) !important;
+    background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=1920&q=80') center/cover no-repeat !important;
+}
+.diabetes-hero .hero-overlay {
+    background: linear-gradient(165deg,rgba(13,148,136,0.92) 0%,rgba(4,120,106,0.88) 50%,rgba(3,92,82,0.85) 100%) !important;
 }
 .diabetes-hero .predictor-card {
     border-top: 3px solid #0D9488;
