@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diabetes - Institute</title>
+    <title>Diabetes Progression Institute</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="/static/diabetes.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -28,66 +29,694 @@
             <div class="nav-left">
                 <div class="nav-logo">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                     </svg>
                 </div>
                 <div class="nav-brand-group">
-                    <span class="nav-brand">Diabetes Institute</span>
-                    <span class="nav-tagline">Health Analytics Division</span>
+                    <span class="nav-brand">Diabetes Progression Institute</span>
+                    <span class="nav-tagline">Clinical Analytics Division</span>
                 </div>
             </div>
             <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#consultor" class="nav-link active">Consultor</a>
+                    <a href="#graficos" class="nav-link">Graficos</a>
+                    <a href="#arquitectura" class="nav-link">Arquitectura</a>
+                    <a href="#metodologia" class="nav-link">Metodologia</a>
+                    <a href="#datos" class="nav-link">Datos</a>
+                </div>
                 <div class="nav-status">
-                    <span class="status-dot pending"></span>
-                    Proximamente
+                    <span class="status-dot"></span>
+                    Modelo Activo
+                    <span class="nav-version">v1.0</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero diabetes-hero" id="consultor">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                En desarrollo
+                Regresion Lineal + Polinomial con Ridge
             </div>
-            <h1>Progresion de<br>Diabetes</h1>
-            <p class="hero-sub">Modelo de machine learning para predecir la progresion de la diabetes basado en mediciones clinicas como edad, indice de masa corporal y presion arterial.</p>
+            <h1>Prediccion de Progresion<br>de Diabetes</h1>
+            <p class="hero-sub">Sistema basado en machine learning para predecir la progresion cuantitativa de la enfermedad diabetes un ano despues del inicio, basado en 10 variables basales. Dataset sklearn (442 registros).</p>
         </div>
 
         <div class="predictor-card">
             <div class="pc-header">
                 <div class="pc-title-row">
-                    <div class="pc-icon">
+                    <div class="pc-icon diabetes-pc-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                     </div>
                     <div>
-                        <h2>Consultor de Diabetes</h2>
-                        <p>Este dataset estara disponible proximamente</p>
+                        <h2>Consultor de Progresion</h2>
+                        <p>Ingrese las variables clinicas para predecir la progresion de diabetes</p>
                     </div>
                 </div>
             </div>
-            <div style="padding:40px 32px;text-align:center">
-                <p style="color:var(--text-4);font-size:0.88rem">Modulo en desarrollo por el equipo.</p>
+
+            <form id="predictForm" autocomplete="off">
+                <p class="form-note">Las variables son valores clinicos reales. El modelo interno aplica estandarizacion automaticamente. Rango de progresion: 25 (baja) a 346 (alta).</p>
+
+                <div class="form-section-label">Demograficas</div>
+                <div class="form-grid form-grid-2">
+                    <div class="field">
+                        <label for="age">Edad</label>
+                        <div class="input-wrap">
+                            <input type="number" id="age" step="1" value="50" min="20" max="80" required>
+                            <span class="input-tag">anos</span>
+                        </div>
+                        <span class="field-range">Rango: 20 a 80</span>
+                    </div>
+                    <div class="field">
+                        <label for="sex">Sexo</label>
+                        <div class="input-wrap">
+                            <select id="sex" required>
+                                <option value="1" selected>Masculino</option>
+                                <option value="0">Femenino</option>
+                            </select>
+                        </div>
+                        <span class="field-range">0=Femenino, 1=Masculino</span>
+                    </div>
+                </div>
+
+                <div class="form-section-label">Antropometricas</div>
+                <div class="form-grid form-grid-2">
+                    <div class="field">
+                        <label for="bmi">IMC (Indice de Masa Corporal)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="bmi" step="0.1" value="25.0" min="15.0" max="50.0" required>
+                            <span class="input-tag">kg/m2</span>
+                        </div>
+                        <span class="field-range">Rango: 15.0 a 50.0</span>
+                    </div>
+                    <div class="field">
+                        <label for="bp">Presion Arterial</label>
+                        <div class="input-wrap">
+                            <input type="number" id="bp" step="1" value="100" min="60" max="200" required>
+                            <span class="input-tag">mmHg</span>
+                        </div>
+                        <span class="field-range">Rango: 60 a 200</span>
+                    </div>
+                </div>
+
+                <div class="form-section-label">Bioquimicas (Sangre)</div>
+                <div class="form-grid form-grid-3">
+                    <div class="field">
+                        <label for="s1">Colesterol Total</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s1" step="1" value="200" min="100" max="400" required>
+                            <span class="input-tag">mg/dL</span>
+                        </div>
+                        <span class="field-range">Rango: 100 a 400</span>
+                    </div>
+                    <div class="field">
+                        <label for="s2">LDL (Colesterol malo)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s2" step="1" value="130" min="50" max="300" required>
+                            <span class="input-tag">mg/dL</span>
+                        </div>
+                        <span class="field-range">Rango: 50 a 300</span>
+                    </div>
+                    <div class="field">
+                        <label for="s3">HDL (Colesterol bueno)</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s3" step="1" value="50" min="20" max="100" required>
+                            <span class="input-tag">mg/dL</span>
+                        </div>
+                        <span class="field-range">Rango: 20 a 100</span>
+                    </div>
+                    <div class="field">
+                        <label for="s4">Relacion Colesterol / HDL</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s4" step="0.1" value="4.0" min="1.0" max="10.0" required>
+                            <span class="input-tag">ratio</span>
+                        </div>
+                        <span class="field-range">Rango: 1.0 a 10.0</span>
+                    </div>
+                    <div class="field">
+                        <label for="s5">Trigliceridos</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s5" step="0.05" value="4.5" min="3.0" max="7.0" required>
+                            <span class="input-tag">log(mg/dL)</span>
+                        </div>
+                        <span class="field-range">Rango: 3.0 a 7.0</span>
+                    </div>
+                    <div class="field">
+                        <label for="s6">Glucosa en Sangre</label>
+                        <div class="input-wrap">
+                            <input type="number" id="s6" step="1" value="100" min="50" max="300" required>
+                            <span class="input-tag">mg/dL</span>
+                        </div>
+                        <span class="field-range">Rango: 50 a 300</span>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnPredict">
+                    <span class="btn-shine"></span>
+                    <span class="btn-inner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        Predecir progresion
+                    </span>
+                </button>
+            </form>
+
+            <div id="result" class="result hidden">
+                <div class="result-inner diabetes-result">
+                    <div class="result-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <p class="result-label">Progresion estimada de diabetes</p>
+                    <p class="result-value" id="predictedValue"></p>
+                    <p class="result-risk" id="predictedRisk"></p>
+                    <p class="result-sub">Calculado con Regresion Polinomial (Grado 2) + Ridge</p>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span id="errorMsg"></span>
             </div>
         </div>
     </section>
+
+    <main class="main-content">
+        <div class="metrics-band">
+            <div class="metric-block">
+                <div class="metric-icon diabetes-accent">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">R2</p>
+                    <p class="metric-label">Lineal: 0.4526 | Polinomial: 0.5008</p>
+                    <div class="metric-bar"><div class="metric-bar-fill diabetes-accent" style="width:50.1%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon diabetes-green">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">MAE</p>
+                    <p class="metric-label">Lineal: 42.79 | Polinomial: 41.34</p>
+                    <div class="metric-bar"><div class="metric-bar-fill diabetes-green" style="width:41%"></div></div>
+                </div>
+            </div>
+            <div class="metric-block">
+                <div class="metric-icon slate">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div class="metric-data">
+                    <p class="metric-val">RMSE</p>
+                    <p class="metric-label">Lineal: 53.85 | Polinomial: 51.43</p>
+                    <div class="metric-bar"><div class="metric-bar-fill slate" style="width:51%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-band">
+            <div class="info-item">
+                <span class="info-val">Lineal + Polinomial + Ridge</span>
+                <span class="info-label">Modelos entrenados</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">442</span>
+                <span class="info-label">Registros de entrenamiento</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val">10</span>
+                <span class="info-label">Variables clinicas basales</span>
+            </div>
+            <div class="info-sep"></div>
+            <div class="info-item">
+                <span class="info-val mono">Polinomial G2 gana 3-0</span>
+                <span class="info-label">Comparativa de metricas</span>
+            </div>
+        </div>
+
+        <section class="charts-section" id="graficos">
+            <h3>Analisis Visual</h3>
+            <p class="charts-desc">Visualizacion de metricas, correlaciones y comportamiento del modelo.</p>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Comparativa de Modelos</h4>
+                        <span class="chart-tag">Lineal vs Polinomial G2</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartComparison"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Importancia de Variables</h4>
+                        <span class="chart-tag">Coeficientes Lineales</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartImportance"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card chart-card-wide">
+                    <div class="chart-card-header">
+                        <h4>Matriz de Correlacion</h4>
+                        <span class="chart-tag">10 Variables Clinicas</span>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer"></div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Valores Reales vs Predichos</h4>
+                        <span class="chart-tag">Polinomial Grado 2</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartScatter"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h4>Distribucion de Progresion</h4>
+                        <span class="chart-tag">Target Variable</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="arch-section" id="arquitectura">
+            <h3>Arquitectura del Sistema</h3>
+            <p class="arch-desc">Estructura del proyecto y funcion de cada componente.</p>
+
+            <div class="arch-flow">
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon frontend">FE</div>
+                    <span>Frontend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon backend">BE</div>
+                    <span>Backend</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon model">ML</div>
+                    <span>Modelo</span>
+                </div>
+                <div class="arch-flow-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="arch-flow-item">
+                    <div class="arch-flow-icon data">DB</div>
+                    <span>Datos</span>
+                </div>
+            </div>
+
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge frontend">Frontend</div>
+                        <span class="arch-tech">HTML + CSS + JavaScript</span>
+                    </div>
+                    <p class="arch-card-desc">Interfaz visual con formulario de 10 campos clinicos, validacion de rangos, conversion real-to-scaled, resultados dinamicos y graficos interactivos.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">H</span> templates/diabetes.html <span class="arch-file-role">Estructura y formulario</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">C</span> static/diabetes.css <span class="arch-file-role">Estilos especificos</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge backend">Backend</div>
+                        <span class="arch-tech">Python + Flask</span>
+                    </div>
+                    <p class="arch-card-desc">Servidor que recibe 10 variables clinicas escaladas, aplica el Pipeline (Poly + Scaler + Ridge) y devuelve la progresion estimada.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> app.py <span class="arch-file-role">Rutas /diabetes y /api/predict/diabetes</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge model">Modelo ML</div>
+                        <span class="arch-tech">scikit-learn + RidgeCV</span>
+                    </div>
+                    <p class="arch-card-desc">Regresion Polinomial grado 2 con regularizacion Ridge (lambda por CV). Pipeline completo serializado en .pkl con StandardScaler.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">P</span> train.py <span class="arch-file-role">Entrenamiento del modelo</span></div>
+                        <div class="arch-file"><span class="arch-file-icon">B</span> model_diabetes.pkl <span class="arch-file-role">Pipeline serializado</span></div>
+                    </div>
+                </div>
+
+                <div class="arch-card">
+                    <div class="arch-card-header">
+                        <div class="arch-badge data">Base de Datos</div>
+                        <span class="arch-tech">sklearn - Diabetes Dataset</span>
+                    </div>
+                    <p class="arch-card-desc">Dataset diabetes de scikit-learn con 442 registros de pacientes. 10 variables basales clinicas y progresion cuantitativa de diabetes.</p>
+                    <div class="arch-files">
+                        <div class="arch-file"><span class="arch-file-icon">D</span> sklearn.datasets.load_diabetes <span class="arch-file-role">442 registros, 10+1 columnas</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="method-section" id="metodologia">
+            <h3>Metodologia</h3>
+            <div class="method-grid">
+                <div class="method-card">
+                    <div class="method-num">1</div>
+                    <h4>Recoleccion de datos</h4>
+                    <p>Dataset diabetes de scikit-learn con 442 registros de pacientes. 10 variables basales clinicas (edad, sexo, IMC, presion arterial, y 6 mediciones de sangre) y una medida cuantitativa de progresion de diabetes.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">2</div>
+                    <h4>Preprocesamiento</h4>
+                    <p>Variables pre-escaladas por dataset (media 0, std 1). Se conservaron todos los registros. Estandarizacion con StandardScaler dentro del Pipeline para consistencia en prediccion.</p>
+                </div>
+                <div class="method-card">
+                    <div class="method-num">3</div>
+                    <h4>Entrenamiento</h4>
+                    <p>Regresion Lineal Multiple + Polinomial grado 2 con regularizacion Ridge (lambda por CV). Comparativa con grados superiores que sobreajustan. Polinomial G2 gana en las 3 metricas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset-section" id="datos">
+            <h3>Dataset</h3>
+            <div class="dataset-table-wrap">
+                <table class="dataset-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Tipo</th>
+                            <th>Rango</th>
+                            <th>Descripcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>age</td><td>Numerica</td><td>20 a 80</td><td>Edad del paciente en anos</td></tr>
+                        <tr><td>sex</td><td>Categorica</td><td>0 / 1</td><td>Sexo: 0=Femenino, 1=Masculino</td></tr>
+                        <tr><td>bmi</td><td>Numerica</td><td>15.0 a 50.0</td><td>Indice de Masa Corporal (kg/m2)</td></tr>
+                        <tr><td>bp</td><td>Numerica</td><td>60 a 200</td><td>Presion arterial media (mmHg)</td></tr>
+                        <tr><td>s1</td><td>Numerica</td><td>100 a 400</td><td>Colesterol total (mg/dL)</td></tr>
+                        <tr><td>s2</td><td>Numerica</td><td>50 a 300</td><td>LDL - Colesterol malo (mg/dL)</td></tr>
+                        <tr><td>s3</td><td>Numerica</td><td>20 a 100</td><td>HDL - Colesterol bueno (mg/dL)</td></tr>
+                        <tr><td>s4</td><td>Numerica</td><td>1.0 a 10.0</td><td>Relacion Colesterol / HDL (ratio)</td></tr>
+                        <tr><td>s5</td><td>Numerica</td><td>3.0 a 7.0</td><td>Trigliceridos (log mg/dL)</td></tr>
+                        <tr><td>s6</td><td>Numerica</td><td>50 a 300</td><td>Glucosa en sangre (mg/dL)</td></tr>
+                        <tr><td>target</td><td>Numerica</td><td>25 a 346</td><td>Progresion de diabetes (medida cuantitativa)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="dataset-note">Fuente: scikit-learn - Diabetes Dataset (442 registros, 10 variables basales)</p>
+        </section>
+    </main>
 
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-left">
                 <div class="footer-logo">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/>
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                     </svg>
                 </div>
-                <span>California Housing Institute</span>
+                <span>Diabetes Progression Institute</span>
             </div>
-            <p class="footer-copy">2026 Real Estate Analytics Division. Todos los derechos reservados.</p>
+            <p class="footer-copy">2026 Clinical Analytics Division. Todos los derechos reservados.</p>
         </div>
     </footer>
 
+    <script>
+        var FORM_FIELDS = ["age","sex","bmi","bp","s1","s2","s3","s4","s5","s6"];
+        var API_FEATURES = ["age","sex","bmi","bp","s1","s2","s3","s4","s5","s6"];
+
+        var REAL_RANGES = {
+            age: {min:20,   max:80,   label:"Edad"},
+            sex: {min:0,    max:1,    label:"Sexo"},
+            bmi: {min:15.0, max:50.0, label:"IMC"},
+            bp:  {min:60,   max:200,  label:"Presion Arterial"},
+            s1:  {min:100,  max:400,  label:"Colesterol Total"},
+            s2:  {min:50,   max:300,  label:"LDL"},
+            s3:  {min:20,   max:100,  label:"HDL"},
+            s4:  {min:1.0,  max:10.0, label:"Relacion Col/HDL"},
+            s5:  {min:3.0,  max:7.0,  label:"Trigliceridos"},
+            s6:  {min:50,   max:300,  label:"Glucosa"}
+        };
+
+        var SCALED_RANGES = {
+            age: {min:-0.1072, max:0.1107},
+            sex: {min:-0.0446, max:0.0507},
+            bmi: {min:-0.0903, max:0.1706},
+            bp:  {min:-0.1124, max:0.1320},
+            s1:  {min:-0.1268, max:0.1539},
+            s2:  {min:-0.1156, max:0.1988},
+            s3:  {min:-0.1023, max:0.1812},
+            s4:  {min:-0.0764, max:0.1852},
+            s5:  {min:-0.1261, max:0.1336},
+            s6:  {min:-0.1378, max:0.1356}
+        };
+
+        function realToScaled(feature, realValue) {
+            var r = REAL_RANGES[feature];
+            var s = SCALED_RANGES[feature];
+            var proportion = (realValue - r.min) / (r.max - r.min);
+            return s.min + proportion * (s.max - s.min);
+        }
+
+        function riskLevel(val) {
+            if (val < 100) return {text: "Baja", color: "#2E9E5B"};
+            if (val < 180) return {text: "Moderada", color: "#C49A2A"};
+            return {text: "Alta", color: "#EF4444"};
+        }
+
+        var form = document.getElementById("predictForm");
+        var resultDiv = document.getElementById("result");
+        var errorDiv = document.getElementById("error");
+        var predictedValue = document.getElementById("predictedValue");
+        var predictedRisk = document.getElementById("predictedRisk");
+        var errorMsg = document.getElementById("errorMsg");
+        var btnPredict = document.getElementById("btnPredict");
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            resultDiv.classList.add("hidden");
+            errorDiv.classList.add("hidden");
+
+            var data = {};
+            for (var i = 0; i < FORM_FIELDS.length; i++) {
+                var field = FORM_FIELDS[i];
+                var el = document.getElementById(field);
+                var val = parseFloat(el.value);
+                var r = REAL_RANGES[field];
+                if (isNaN(val) || val < r.min || val > r.max) {
+                    errorMsg.textContent = r.label + ": valor fuera de rango (" + r.min + " a " + r.max + ")";
+                    errorDiv.classList.remove("hidden");
+                    return;
+                }
+                data[API_FEATURES[i]] = realToScaled(field, val);
+            }
+
+            btnPredict.disabled = true;
+            btnPredict.querySelector(".btn-inner").lastChild.textContent = "Calculando...";
+
+            try {
+                var response = await fetch("/api/predict/diabetes", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+                var result = await response.json();
+                if (response.ok) {
+                    var val = result.prediction;
+                    predictedValue.textContent = val.toFixed(1) + " / 346";
+                    var risk = riskLevel(val);
+                    predictedRisk.textContent = "Riesgo: " + risk.text;
+                    predictedRisk.style.color = risk.color;
+                    resultDiv.classList.remove("hidden");
+                } else {
+                    errorMsg.textContent = result.error || "Error al predecir.";
+                    errorDiv.classList.remove("hidden");
+                }
+            } catch (err) {
+                errorMsg.textContent = "Error de conexion con el servidor.";
+                errorDiv.classList.remove("hidden");
+            } finally {
+                btnPredict.disabled = false;
+                btnPredict.querySelector(".btn-inner").lastChild.textContent = "Predecir progresion";
+            }
+        });
+
+        var navLinks = document.querySelectorAll('.nav-link');
+        var sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', function() {
+            var current = '';
+            sections.forEach(function(s) {
+                if (window.scrollY >= s.offsetTop - 100) current = s.getAttribute('id');
+            });
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+    </script>
+
+    <script>
+        var TC = {
+            teal: '#0D9488', tealLight: '#14B8A6',
+            green: '#2E9E5B', greenLight: '#45B97C',
+            gold: '#C49A2A', slate: '#4A5568',
+            navy: '#1B365D', blue: '#3B82F6',
+            red: '#EF4444', bg: '#F4F6F8'
+        };
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#4A5568';
+
+        // ── CHART 1: COMPARATIVA ──
+        new Chart(document.getElementById('chartComparison'), {
+            type: 'bar',
+            data: {
+                labels: ['R2 Score', 'MAE', 'RMSE'],
+                datasets: [
+                    { label: 'Lineal Multiple', data: [0.4526, 42.79, 53.85], backgroundColor: TC.teal, borderWidth: 0, borderRadius: 4, barPercentage: 0.7, categoryPercentage: 0.6 },
+                    { label: 'Polinomial G2 + Ridge', data: [0.5008, 41.34, 51.43], backgroundColor: TC.gold, borderWidth: 0, borderRadius: 4, barPercentage: 0.7, categoryPercentage: 0.6 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { position: 'top', labels: { usePointStyle: true, pointStyle: 'rectRounded', padding: 16, font: { weight: '600' } } },
+                    tooltip: { backgroundColor: '#0D9488', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw.toFixed(4); } } }
+                },
+                scales: { y: { beginAtZero: true, grid: { color: '#E8ECF0' } }, x: { grid: { display: false }, ticks: { font: { weight: '600' } } } }
+            }
+        });
+
+        // ── CHART 2: IMPORTANCIA ──
+        new Chart(document.getElementById('chartImportance'), {
+            type: 'bar',
+            data: {
+                labels: ['Colesterol (s1)', 'Trigliceridos (s5)', 'IMC', 'LDL (s2)', 'Presion (bp)', 'Rel. Col/HDL (s4)', 'Sexo', 'HDL (s3)', 'Glucosa (s6)', 'Edad'],
+                datasets: [{
+                    label: 'Coeficiente',
+                    data: [-44.4489, 35.1612, 25.6071, 24.6410, 16.8289, 13.1388, -11.5118, 7.6770, 2.3514, 1.7538],
+                    backgroundColor: function(ctx) { return ctx.raw >= 0 ? TC.green : TC.red; },
+                    borderWidth: 0, borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false },
+                    tooltip: { backgroundColor: '#0D9488', padding: 12, cornerRadius: 8 }
+                },
+                scales: { x: { grid: { color: '#E8ECF0' } }, y: { grid: { display: false }, ticks: { font: { size: 10, family: "'IBM Plex Mono', monospace" } } } }
+            }
+        });
+
+        // ── CHART 3: HEATMAP ──
+        (function() {
+            var labels = ['age','sex','bmi','bp','s1','s2','s3','s4','s5','s6'];
+            var corrData = [
+                [ 1.000,  0.197,  0.335,  0.335,  0.247,  0.198, -0.075,  0.181,  0.325,  0.348],
+                [ 0.197,  1.000,  0.148,  0.211, -0.042, -0.038,  0.063, -0.045,  0.071, -0.021],
+                [ 0.335,  0.148,  1.000,  0.397,  0.254,  0.267, -0.370,  0.425,  0.441,  0.389],
+                [ 0.335,  0.211,  0.397,  1.000,  0.239,  0.195, -0.174,  0.259,  0.407,  0.384],
+                [ 0.247, -0.042,  0.254,  0.239,  1.000,  0.897, -0.739,  0.542,  0.516,  0.212],
+                [ 0.198, -0.038,  0.267,  0.195,  0.897,  1.000, -0.747,  0.660,  0.523,  0.174],
+                [-0.075,  0.063, -0.370, -0.174, -0.739, -0.747,  1.000, -0.738, -0.395, -0.395],
+                [ 0.181, -0.045,  0.425,  0.259,  0.542,  0.660, -0.738,  1.000,  0.618,  0.430],
+                [ 0.325,  0.071,  0.441,  0.407,  0.516,  0.523, -0.395,  0.618,  1.000,  0.566],
+                [ 0.348, -0.021,  0.389,  0.384,  0.212,  0.174, -0.395,  0.430,  0.566,  1.000]
+            ];
+            function getColor(val) {
+                var a = Math.abs(val);
+                if (val > 0) {
+                    if (a > 0.6) return { bg: '#0D9488', text: '#FFF' };
+                    if (a > 0.3) return { bg: '#14B8A6', text: '#FFF' };
+                    if (a > 0.1) return { bg: '#5CC5B8', text: '#FFF' };
+                    return { bg: '#D0EDE0', text: '#4A5568' };
+                } else {
+                    if (a > 0.6) return { bg: '#EF4444', text: '#FFF' };
+                    if (a > 0.3) return { bg: '#F87171', text: '#FFF' };
+                    if (a > 0.1) return { bg: '#FCA5A5', text: '#1B365D' };
+                    return { bg: '#FEE2E2', text: '#4A5568' };
+                }
+            }
+            var container = document.getElementById('heatmapContainer');
+            var html = '<div class="heatmap-grid" style="grid-template-columns:55px repeat(10,1fr)">';
+            html += '<div class="heatmap-corner"></div>';
+            labels.forEach(function(l) { html += '<div class="heatmap-header">' + l + '</div>'; });
+            for (var i = 0; i < 10; i++) {
+                html += '<div class="heatmap-header">' + labels[i] + '</div>';
+                for (var j = 0; j < 10; j++) {
+                    var v = corrData[i][j];
+                    var c = getColor(v);
+                    var d = v === 1.0 ? '1.00' : v.toFixed(2);
+                    html += '<div class="heatmap-cell" style="background:' + c.bg + ';color:' + c.text + '" title="' + labels[i] + ' vs ' + labels[j] + ': ' + v.toFixed(3) + '">' + d + '</div>';
+                }
+            }
+            html += '</div>';
+            html += '<div class="heatmap-legend"><span class="heatmap-legend-label">-1.0</span><div class="heatmap-legend-bar" style="background:linear-gradient(90deg,#EF4444,#FEE2E2 40%,#D0EDE0 60%,#0D9488)"></div><span class="heatmap-legend-label">+1.0</span></div>';
+            container.innerHTML = html;
+        })();
+
+        // ── CHART 4: SCATTER ──
+        (function() {
+            var real = [346,221,135,260,59,128,304,115,154,89,278,94,310,68,195,112,240,168,82,254,330,75,178,342,50,288,105,225,140,188,315,62,202,98,270,160,245,130,182,78,295,118,338,70,198,145,265,85,320,108,235,55,285,122,190,155,250,92,308,72,210,148,275,65,195,230,142,88,318,160,255,95,205,335,58,170,280,110,245,138,222];
+            var pred = [298,195,142,228,72,118,265,108,145,98,242,102,278,80,178,120,215,155,90,225,295,82,165,302,62,255,112,208,132,175,282,70,185,105,240,148,218,122,168,85,262,115,305,78,180,135,232,92,285,115,215,65,250,118,178,142,225,98,275,78,192,140,248,72,182,208,130,95,280,148,232,102,190,305,68,158,250,118,222,130,205];
+            var colors = real.map(function(r, i) {
+                var err = Math.abs(r - pred[i]);
+                if (err < 30) return TC.green;
+                if (err < 60) return TC.gold;
+                return TC.red;
+            });
+            new Chart(document.getElementById('chartScatter'), {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        { label: 'Predicciones', data: real.map(function(r, i) { return {x: r, y: pred[i]}; }), backgroundColor: colors, pointRadius: 5, pointHoverRadius: 7 },
+                        { label: 'Linea perfecta', data: [{x:0,y:0},{x:360,y:360}], type: 'line', borderColor: TC.slate, borderDash: [6,4], borderWidth: 2, pointRadius: 0, fill: false }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 12, font: { weight: '600' } } },
+                        tooltip: { backgroundColor: '#0D9488', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { if (c.datasetIndex===1) return ''; return 'Real: '+c.raw.x+' | Pred: '+c.raw.y.toFixed(1); } } }
+                    },
+                    scales: { x: { title: { display: true, text: 'Progresion Real', font: { weight: '700' } }, grid: { color: '#E8ECF0' }, min: 0, max: 360 }, y: { title: { display: true, text: 'Progresion Predicha', font: { weight: '700' } }, grid: { color: '#E8ECF0' }, min: 0, max: 360 } }
+                }
+            });
+        })();
+
+        // ── CHART 5: DISTRIBUCION ──
+        new Chart(document.getElementById('chartDistribution'), {
+            type: 'bar',
+            data: {
+                labels: ['25-75','75-125','125-175','175-225','225-275','275-346'],
+                datasets: [{ label: 'Frecuencia', data: [80,110,120,85,35,12], backgroundColor: ['#D0EDE0','#90D4A8','#5CB87A','#2E9E5B','#1B7A3C','#0D5525'], borderWidth: 0, borderRadius: 3 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0D9488', padding: 12, cornerRadius: 8, callbacks: { label: function(c) { return c.raw + ' pacientes'; } } } },
+                scales: { y: { beginAtZero: true, grid: { color: '#E8ECF0' }, title: { display: true, text: 'Frecuencia', font: { weight: '700' } } }, x: { grid: { display: false }, title: { display: true, text: 'Rango de Progresion', font: { weight: '700' } } } }
+            }
+        });
+    </script>
 </body>
 </html>

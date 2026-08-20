@@ -83,10 +83,21 @@ FEATURES = {
         "name": "Diabetes",
         "desc": "Prediccion de progresion de diabetes",
         "fields": [],
-        "feature_names": [],
-        "metrics": {"r2": "-", "mae": "-", "rmse": "-", "r2_pct": "0", "mae_pct": "0", "rmse_pct": "0"},
-        "algo": "Pendiente", "records": "-", "features_count": "-", "target": "-",
-        "ranges": {}
+        "feature_names": ["age","sex","bmi","bp","s1","s2","s3","s4","s5","s6"],
+        "metrics": {"r2": "0.5008", "mae": "41.3405", "rmse": "51.4267", "r2_pct": "50.1", "mae_pct": "41", "rmse_pct": "51"},
+        "algo": "Polinomial G2 + Ridge", "records": "442", "features_count": "10", "target": "progression",
+        "ranges": {
+            "age": {"min": -0.1072, "max": 0.1107, "label": "Edad"},
+            "sex": {"min": -0.0446, "max": 0.0507, "label": "Sexo"},
+            "bmi": {"min": -0.0903, "max": 0.1706, "label": "IMC"},
+            "bp": {"min": -0.1124, "max": 0.1320, "label": "Presion Arterial"},
+            "s1": {"min": -0.1268, "max": 0.1539, "label": "Colesterol Total"},
+            "s2": {"min": -0.1156, "max": 0.1988, "label": "LDL"},
+            "s3": {"min": -0.1023, "max": 0.1812, "label": "HDL"},
+            "s4": {"min": -0.0764, "max": 0.1852, "label": "Relacion Col/HDL"},
+            "s5": {"min": -0.1261, "max": 0.1336, "label": "Trigliceridos"},
+            "s6": {"min": -0.1378, "max": 0.1356, "label": "Glucosa"}
+        }
     }
 }
 
